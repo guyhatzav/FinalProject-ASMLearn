@@ -4,7 +4,7 @@
 [![](https://img.shields.io/badge/Firebase-v7.16.1-blue)](https://firebase.google.com/docs/web/setup?authuser=0#from-the-cdn)
 
 ````
-Note: This repo documents only the client-side project. A link to the engine-side's docs is in the shields.
+הערה: תיעוד זה מקיף את פרויקט הממשק האינטרנטי בלבד, על מנת לצפות בתיעוד צד המנוע יש להכנס לקישור שבתגיות
 ````
 Since their invention, the high-level programming languages have received much widespread attention across the internet compared to the old low-level languages,
 so their practice among beginner programmers has become more enjoyable, easier and more meaningful.
