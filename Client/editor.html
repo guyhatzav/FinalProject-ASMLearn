@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>ASMLearn - אסמלרן</title>
+    <link rel="icon" href="img/icon.png">
+
+    <link href="https://fonts.googleapis.com/css?family=Secular+One&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-functions.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-storage.js"></script>
+    <script src="js/init-firebase.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <link rel="stylesheet" href="editor/css/loading.css">
+    <link rel="stylesheet" href="editor/css/editor.css">
+    <link rel="stylesheet" href="editor/css/select-theme.css">
+    <link rel="stylesheet" href="editor/css/test-cases-modal.css">
+    <link rel="stylesheet" href="editor/css/chat.css">
+    <link rel="stylesheet" href="editor/css/live-chat.css">
+    <link rel="stylesheet" href="newtask/css/popup.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.8/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="editor/js/assembly_x86.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- Main Quill library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+</head>
+<body>
+    <div id="page-start-loading" class="editor-loading scale-up-center">
+        <div id="tasks_loading" class="loading_supereffect">
+            <ul class="all-loading-squares">
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+            </ul>
+        </div>
+    </div>
+    <div id="editor-full-container" style="display:none;">
+        <div class="split left">
+            <div class="editor-toolbar">
+                <div class="action-buttons"></div>
+                <div class="btn-in-editor-first" title="(Redo) חידוש פעולה">
+                    <img id="btn_redo" class="do_icon" src="editor/img/blueArrow.png" />
+                </div>
+                <div class="btn-in-editor" title="(Undo) ביטול פעולה">
+                    <img id="btn_undo" class="do_icon img-hor" src="editor/img/blueArrow.png" />
+                </div>
+                <div class="btn-in-editor" title="(Reset) איפוס לקוד ההתחלתי">
+                    <img id="btn_reset" class="do_icon" src="editor/img/reset.png" />
+                </div>
+                <div class="btn-in-editor" title="הגדלת פונט התצוגה" style="margin-left: 20px;">
+                    <img id="btn_fontup" class="do_icon" src="editor/img/fontup.png" />
+                </div>
+                <div class="btn-in-editor" title="הקטנת פונט התצוגה">
+                    <img id="btn_fontdown" class="do_icon" src="editor/img/fontdown.png" />
+                </div>
+
+                <button id="submit_button" class="submit_button"></button>
+                <button id="save_button" class="save_button"></button>
+
+            </div>
+            <div class="window-body">
+                <div id="editor"></div>
+            </div>
+            <div class="table_center">
+                <div class="drop-down">
+                    <div id="dropDown" class="drop-down__button">
+                        <span class="drop-down__name">ערכת נושא</span>
+                        <img class="drop-down__icon" src="editor/img/theme.png" />
+                    </div>
+
+                    <div class="drop-down__menu-box" style="direction:rtl">
+                        <ul class="drop-down__menu">
+                            <li id="li_xcode_theme" class="drop-down__item">אפל ◯</li>
+                            <li id="li_clouds_theme" class="drop-down__item">עננים ◯</li>
+                            <li id="li_sqlserver_theme" class="drop-down__item">שרת SQL ◯</li>
+                            <li id="li_twilight_theme" class="drop-down__item">דמדומים ⬤</li>
+                            <li id="li_ambiance_theme" class="drop-down__item">אווירה ⬤</li>
+                            <li id="li_chaos_theme" class="drop-down__item">כאוס ⬤</li>
+                            <li id="li_tomorrow_night_blue_theme" class="drop-down__item">לילה כחול ⦿</li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-overlay cancel-chat-modal"></div>
+            <div class="chat-modal-container cancel-chat-modal">
+                <button class="chat-cancel cancel-chat-modal">סגירה</button>
+                <div class="chat-modal">
+                    <div class="chat">
+                        <div class="chat-title">
+
+                        </div>
+                        <div id="chat-messages" class="messages">
+                            <div class="messages-content"></div>
+                        </div>
+                        <div class="message-box">
+                            <textarea id="ta_msgInput" onkeypress="ta_msgInputKeyPressed(this)" type="text" class="message-input" placeholder="הקלד/י הודעה..."></textarea>
+                            <button type="submit" class="message-submit">שליחה</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div id="btn_chat" class="chat_button chat_open">
+                <span class="chat_btn_text chat_open">צ'אט</span>
+                <img class="chat_btn_icon chat_open" src="editor/img/chat.png" />
+            </div>
+
+        </div>
+        <div class="split right">
+            <div class="window-body2">
+                <img src="img/ASMLearnLogoBlack.png" oncontextmenu="return false" style="float:left; margin-top: 2px; margin-left: 2px; width:200px; height:45px; display:inline;" />
+                <button id="btn_deleteTask" class="deleteTask_button cd-popup-trigger">מחיקת מטלה 🗑️</button>
+                <div id="btn_edittask" class="drop-down__button" style="margin-top: 8px; margin-left: 10px;">
+                    <span class="drop-down__name">עריכת מטלה</span>
+                    <img class="drop-down__icon" src="editor/img/edit.png" />
+                </div>
+                <img src="editor/img/back.png" title="חזרה לאחור" class="back-button" onclick="window.location = 'dashboard.html'" />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="task-property-container-with-bg">
+                    <h4 class="task-name-label">:שם המטלה</h4>
+                    <div id="div_taskNameBox" class="task-name-box">שם</div>
+                    <h4 class="task-author-label">:מחבר/ת</h4>
+                    <div class='mini-avatar-holder'>
+                        <img id="img_taskAuthorImage" onerror="this.src = 'dashboard/img/noImage.jpg'" class='mini-img' />
+                    </div>
+                    <div id="div_taskAuthorNameBox" class="task-author-box"></div>
+                    <h4 class="task-difficulty-label">:רמת הקושי</h4>
+                    <div id="div_taskDifficultyBox" class="task-difficulty-box"></div>
+                    <h4 class="task-subject-label">:נושא</h4>
+                    <div id="div_taskSubjectBox" class="task-subject-box"></div>
+                    <h4 class="task-status-label">:סטטוס</h4>
+                    <div id="div_taskStatusBox" class="task-status-box"></div>
+                </div>
+                <div class="task-description-container">
+                    <img src="img/wirte-description.png" class="icon" />
+                    <h4 class="menu-label">תיאור המטלה</h4>
+                    <br />
+                    <br />
+                    <h1 class="menu-sublabel">בשדה זה מוצג הסבר מלא ומפורט אודות המטלה שלפניך, יש לקרוא ולהבין את התיאור במלואו בטרם תיגש/י לביצוע המטלה</h1>
+                    <br />
+                    <br />
+                    <div id="div_taskDescription" class="menu-box"></div>
+                </div>
+                <br />
+                <div id="input-format-container" class="task-property-container">
+                    <img src="img/input.png" class="icon" />
+                    <h4 class="menu-label">מבנה הקלט</h4>
+                    <br />
+                    <br />
+                    <h1 class="menu-sublabel">בשדה זה מוסבר באופן מפורט על דרכי קבלת הקלט מידי המערכת על מנת שיהיה ניתן להשתמש בו במהלך עשיית המטלה</h1>
+                    <br />
+                    <br />
+                    <div id="div_taskInputFormat" class="menu-box"></div>
+                </div>
+                <br />
+                <div id="output-format-container" class="task-property-container">
+                    <img src="img/output.png" class="icon" />
+                    <h4 class="menu-label">מבנה הפלט</h4>
+                    <br />
+                    <br />
+                    <h1 class="menu-sublabel">בשדה זה מוסבר באופן מפורט על דרכי הצגת הפלט כפי שהמערכת מצפה לקבל אותו על מנת לקבל ניקוד מירבי על המטלה</h1>
+                    <br />
+                    <br />
+                    <div id="div_taskOutputFormat" class="menu-box"></div>
+                </div>
+                <br />
+                <div id="notAllowedCommands-container" class="task-property-container">
+                    <img src="img/notallowed.png" class="icon" />
+                    <h4 class="menu-label">פקודות אסורות לשימוש</h4>
+                    <br />
+                    <br />
+                    <h1 class="menu-sublabel">בחלק מן המטלות, על מנת להעצים את האתגר, חלק מסט הפקודות של השפה אסורות לשימוש</h1>
+                    <br />
+                    <br />
+                    <div id="notAllowedCommands"></div>
+                </div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="modal" style="bottom: 10px; right:10px;">
+                    <div class="modal-container">
+                        <div id="submissionsResultsForm" class="modal-left">
+                            <img src="editor/img/test.png" class="test-case-title-icon" oncontextmenu="return false" />
+                            <h3 class="test-case-title-text">מקרה בדיקה 1</h3>
+                            <h3 class="test-case-title-openclose-text">גלוי</h3>
+                            <br />
+                            <br />
+                            <br />
+                            <h3 class="test-case-subject">סטטוס:</h3>
+                            <div id="divTestCase-0-status" class="test-case-container-colored">
+                                <img id="imgTestCase-0-status" src="editor/img/unknown.png" class="test-case-icon" oncontextmenu="return false" />
+                                <p id="pTestCase-0-status" class="test-case-status-text">טרם התבצעה הרצה</p>
+                            </div>
+                            <h3 id="h3TestCase-yourOutput" class="test-case-subject">התוצאה שלך:</h3>
+                            <div id="divTestCase-yourOutput" class="test-case-container">
+                                <p id="pTestCase-yourOutput" class="open-test-case-results-text">יש להריץ את התוכנית לפחות פעם אחת על מנת לצפות בתוצאתך</p>
+                            </div>
+                            <h3 class="test-case-subject">התוצאה המצופה:</h3>
+                            <div class="test-case-container">
+                                <p id="pTestCase-expectedOutput" class="open-test-case-results-text">יש להריץ את התוכנית לפחות פעם אחת על מנת לצפות בתוצאה המצופה</p>
+                            </div>
+                            <hr />
+                        </div>
+                        <button class="icon-button close-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                                <path d="M 25 3 C 12.86158 3 3 12.86158 3 25 C 3 37.13842 12.86158 47 25 47 C 37.13842 47 47 37.13842 47 25 C 47 12.86158 37.13842 3 25 3 z M 25 5 C 36.05754 5 45 13.94246 45 25 C 45 36.05754 36.05754 45 25 45 C 13.94246 45 5 36.05754 5 25 C 5 13.94246 13.94246 5 25 5 z M 16.990234 15.990234 A 1.0001 1.0001 0 0 0 16.292969 17.707031 L 23.585938 25 L 16.292969 32.292969 A 1.0001 1.0001 0 1 0 17.707031 33.707031 L 25 26.414062 L 32.292969 33.707031 A 1.0001 1.0001 0 1 0 33.707031 32.292969 L 26.414062 25 L 33.707031 17.707031 A 1.0001 1.0001 0 0 0 32.980469 15.990234 A 1.0001 1.0001 0 0 0 32.292969 16.292969 L 25 23.585938 L 17.707031 16.292969 A 1.0001 1.0001 0 0 0 16.990234 15.990234 z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="modal-button">לצפייה בהרצה האחרונה</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cd-popup" role="alert" style="z-index:99">
+        <div class="cd-popup-container">
+            <p>שימ/י ❤: האם את/ה בטוח/ה שברצונך למחוק מטלה זו? לידיעתך, המטלה תימחק לצמיתות. לאחר ביצוע פעולה זו לא יהיה ניתן לשחזר את התוכן שאבד</p>
+            <ul class="cd-buttons">
+                <li class="prefer-to-exit"><a class="prefer-to-exit">מחיקה</a></li>
+                <li class="prefer-to-stay"><a class="prefer-to-stay">ביטול</a></li>
+            </ul>
+            <a class="cd-popup-close img-replace">Close</a>
+        </div>
+    </div>
+    <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/prism.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react/16.13.1/umd/react.production.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.13.1/umd/react-dom.production.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/canvas-confetti@0.0.3/dist/confetti.browser.min.js'></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src='https://s3.amazonaws.com/popmotion.io/static/dist/popmotion.min.js'></script>
+
+    <script src="js/cipher.js"></script>
+    <script src="editor/js/chat.js"></script>
+    <script src="editor/js/tags.js"></script>
+    <script src="editor/js/test-cases-modal.js"></script>
+    <script src="editor/js/editor.js"></script>
+    <script src="editor/js/popup.js"></script>
+    <script src="editor/js/live-chat.js"></script>
+</body>
+</html>

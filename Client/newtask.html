@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>ASMLearn - אסמלרן</title>
+    <link rel="icon" href="img/icon.png">
+    <link href="https://fonts.googleapis.com/css?family=Secular+One&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css'>
+    <link rel='stylesheet' href='https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" />
+
+    <link rel="stylesheet" href="css/alertify.css" type="text/css" />
+    <link rel="stylesheet" href="newtask/css/tags.css">
+    <link rel="stylesheet" href="newtask/css/textbox.css">
+    <link rel="stylesheet" href="newtask/css/tabbar.css">
+    <link rel="stylesheet" href="newtask/css/main-tab-bar.css">
+    <link rel="stylesheet" href="newtask/css/tabs.css">
+    <link rel="stylesheet" href="newtask/css/radiobuttons.css">
+    <link rel="stylesheet" href="newtask/css/input-output-tabs.css">
+    <link rel="stylesheet" href="newtask/css/tooltip.css">
+    <link rel="stylesheet" href="editor/css/loading.css">
+    <link rel="stylesheet" href="newtask/css/menu_cornermorph.css" type="text/css" />
+    <link rel="stylesheet" href="newtask/css/newtask.css">
+    <link rel="stylesheet" href="newtask/css/popup.css">
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-functions.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+    <script src="js/init-firebase.js"></script>
+
+    <!-- Main Quill library -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+
+    <script type="text/javascript" src="js/alertify.js"></script>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/ace.js' type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.8/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+    <script src="editor/js/assembly_x86.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- Theme included stylesheets -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+
+</head>
+<body>
+    <div id="page-start-loading" class="newtask-loading scale-up-center">
+        <div id="tasks_loading" class="loading_supereffect">
+            <ul class="all-loading-squares">
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+                <li class="loading-square"></li>
+            </ul>
+        </div>
+    </div>
+    <div id="newtask-full-container" class="full-container hided">
+        <div class="menu-wrap">
+            <nav class="menu">
+                <nav class="menu">
+                    <h1 class="my-drafts-title">הטיוטות שלי</h1>
+                    <div id="taskslist_container" class="taskslist-container">
+                    </div>
+                    <button id="btn_addDraft" class="add-new-draft" tooltip="הכנסת תוכן הטופס הנוכחי לרשימת הטיוטות" flow="down">✚ הוספת טיוטה</button>
+                    <button id="btn_closeDraftsMenu" class="close-drafts-menu" onclick="closeMenu()">✘ סגירה</button>
+                </nav>
+            </nav>
+        </div>
+
+        <img id="btn_back" src="editor/img/home.png" title="חזרה לעמוד הראשי" class="home-button slide-bl  cd-popup-trigger" />
+        <img id="btn_drafts" src="newtask/img/draft.png" title="הטיוטות שלי" class="drafts-button slide-bl" />
+        <img id="btn_toTask" src="editor/img/back.png" title="חזרה למטלה שערכת" class="toTask-button slide-bl  cd-popup-trigger" />
+        <div class="container scale-up-center">
+            <div class="tab_container">
+                <h3 class="d_active tab_drawer_heading" rel="tab1">Tab 1</h3>
+                <div id="tab1" class="tab_content scroll">
+                    <div class="category-with-title-container">
+                        <div class="task-name-container slide-in-left">
+                            <img src="newtask/img/name.png" class="icon" />
+                            <h3 class="label">שם המטלה</h3>
+                            <h1 class="red-star">שדה חובה</h1>
+                            <br />
+                            <br />
+                            <h1 class="sublabel">בחר/י את השם של המטלה</h1>
+                            <br />
+                            <div class="omrs-input-group textbox-container">
+                                <label class="omrs-input-filled">
+                                    <input id="txb-task-name" class="txb-task-name" required>
+                                    <span class="omrs-input-label">שם המטלה</span>
+                                    <span class="omrs-input-helper">:הנחיות</span>
+                                    <span class="omrs-input-helper">השתדל/י שהשם יהיה קצר ותמציתי ככל האפשר -</span>
+                                    <span class="omrs-input-helper">השתדל/י שהשם יתאר את המטלה בצורה מיטבית -</span>
+                                </label>
+                            </div>
+
+                        </div>
+                        <div class="difficulty-container slide-in-left250">
+                            <img src="dashboard/img/difficulty.png" class="icon" />
+                            <h3 class="label">רמת קושי</h3>
+                            <h1 class="red-star">שדה חובה</h1>
+                            <br />
+                            <br />
+                            <h1 class="sublabel">בחר/י את רמת הקושי של המטלה</h1>
+                            <br />
+                            <nav class="tabbar">
+                                <div>
+                                    <input id="rb-easy" type="radio" name="menu" checked>
+                                    <label for="rb-easy">
+                                        <svg id="color" enable-background="new 0 0 24 24" height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg"><path d="m23.363 8.584-7.378-1.127-3.307-7.044c-.247-.526-1.11-.526-1.357 0l-3.306 7.044-7.378 1.127c-.606.093-.848.83-.423 1.265l5.36 5.494-1.267 7.767c-.101.617.558 1.08 1.103.777l6.59-3.642 6.59 3.643c.54.3 1.205-.154 1.103-.777l-1.267-7.767 5.36-5.494c.425-.436.182-1.173-.423-1.266z" fill="#ffc107" /></svg>
+                                        <span>קלה</span>
+                                    </label>
+                                    <input id="rb-medium" type="radio" name="menu">
+                                    <label for="rb-medium">
+                                        <svg id="color" enable-background="new 0 0 24 24" height="512" viewBox="0 0 24 24" width="512" xmlns="http://www.w3.org/2000/svg"><g fill="#ffc107"><path d="m23.363 14.783-3.923-.6-1.761-3.752c-.247-.526-1.11-.526-1.357 0l-1.761 3.752-3.923.6c-.606.093-.848.83-.423 1.265l2.86 2.932-.677 4.149c-.101.616.556 1.081 1.103.777l3.5-1.935 3.5 1.935c.54.3 1.205-.154 1.103-.777l-.677-4.149 2.86-2.932c.424-.435.181-1.172-.424-1.265z" /><path d="m11.603 13.129-.677-4.149 2.86-2.932c.425-.435.181-1.173-.423-1.265l-3.923-.6-1.761-3.752c-.247-.526-1.11-.526-1.357 0l-1.762 3.753-3.923.6c-.606.093-.848.83-.423 1.265l2.86 2.932-.677 4.149c-.101.616.555 1.079 1.103.777l3.5-1.935 3.5 1.935c.54.299 1.205-.154 1.103-.778z" /></g></svg>
+                                        <span>בינונית</span>
+                                    </label>
+                                    <input id="rb-hard" type="radio" name="menu">
+                                    <label for="rb-hard">
+                                        <svg xmlns="http://www.w3.org/2000/svg" id="color" enable-background="new 0 0 24 24" height="512px" viewBox="0 0 24 24" width="512px" class="hovered-paths"><g><path d="m15.367 10.129-.44-2.702 1.86-1.907c.425-.435.181-1.173-.423-1.265l-2.541-.389-1.144-2.436c-.247-.526-1.11-.526-1.357 0l-1.144 2.436-2.541.389c-.606.093-.848.83-.423 1.265l1.86 1.907-.44 2.702c-.101.619.559 1.079 1.103.777l2.263-1.251 2.264 1.251c.54.301 1.205-.154 1.103-.777z" fill="#ffa000" data-original="#FFA000" class="hovered-path active-path" style="fill:#FFC107" data-old_color="#ffa000" /><g fill="#ffc107"><path d="m10.363 14.255-2.541-.389-1.144-2.436c-.247-.526-1.11-.526-1.357 0l-1.144 2.436-2.541.389c-.606.093-.848.83-.423 1.265l1.86 1.907-.44 2.702c-.101.616.556 1.081 1.103.777l2.264-1.251 2.264 1.251c.54.3 1.205-.154 1.103-.777l-.44-2.702 1.86-1.907c.424-.435.181-1.172-.424-1.265z" data-original="#FFC107" class="" style="fill:#FFC107" /><path d="m22.363 14.255-2.541-.389-1.144-2.436c-.247-.526-1.11-.526-1.357 0l-1.144 2.436-2.541.389c-.606.093-.848.83-.423 1.265l1.86 1.907-.44 2.702c-.101.617.557 1.081 1.103.777l2.264-1.251 2.264 1.251c.54.3 1.205-.154 1.103-.777l-.44-2.702 1.86-1.907c.424-.435.181-1.172-.424-1.265z" data-original="#FFC107" class="" style="fill:#FFC107" /></g></g> </svg>
+                                        <span>קשה</span>
+                                    </label>
+                                    <span></span>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="categories-container slide-in-left500">
+                            <img src="newtask/img/categories-list.png" class="icon" />
+                            <h3 class="label">הנושא המרכזי</h3>
+                            <h1 class="red-star">שדה חובה</h1>
+                            <br />
+                            <br />
+                            <h1 class="sublabel">בחר/י את הנושא המרכזי בו עוסקת המטלה</h1>
+                            <br />
+                            <br />
+                            <div class="radiobuttons-container">
+                                <div class="swappy-radios" role="radiogroup" aria-labelledby="swappy-radios-label">
+                                    <label>
+                                        <div class="color-dot" style="background-color:	rgb(51, 89, 204)"></div>
+                                        <input id="rb_movarray" type="radio" name="options" checked />
+                                        <span class="radio"></span>
+                                        <span style="font-family: 'Secular One', sans-serif">שיטות מיעון ומערכים</span>
+                                    </label>
+                                    <label>
+                                        <div class="color-dot" style="background-color: rgba(67, 134, 45,1)"></div>
+                                        <input id="rb_aritlogic" type="radio" name="options" />
+                                        <span class="radio"></span>
+                                        <span style="font-family: 'Secular One', sans-serif">אריתמטיקה ולוגיקה</span>
+                                    </label>
+                                    <label>
+                                        <div class="color-dot" style="background-color: rgb(191, 64, 64)"></div>
+                                        <input id="rb_loopif" type="radio" name="options" />
+                                        <span class="radio"></span>
+                                        <span style="font-family: 'Secular One', sans-serif">לולאות ומבני בקרה</span>
+                                    </label>
+                                    <label>
+                                        <div class="color-dot" style="background-color: rgb(191, 191, 64)"></div>
+                                        <input id="rb_stack" type="radio" name="options" />
+                                        <span class="radio"></span>
+                                        <span style="font-family: 'Secular One', sans-serif">מחסנית</span>
+                                    </label>
+                                    <label>
+                                        <div class="color-dot" style="background-color: rgb(191, 128, 64)"></div>
+                                        <input id="rb_subroutines" type="radio" name="options" />
+                                        <span class="radio"></span>
+                                        <span style="font-family: 'Secular One', sans-serif">שגרות ומאקרו</span>
+                                    </label>
+                                    <label>
+                                        <div class="color-dot" style="background-color: rgb(128, 64, 191)"></div>
+                                        <input id="rb_interrupts" type="radio" name="options" />
+                                        <span class="radio"></span>
+                                        <span style="font-family: 'Secular One', sans-serif">פסיקות</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br />
+                </div>
+                <h3 class="tab_drawer_heading" rel="tab2">Tab 2</h3>
+                <div id="tab2" class="tab_content">
+                    <div class="description-container">
+
+                        <img src="img/wirte-description.png" class="icon" />
+                        <h3 class="label" style="margin-bottom: 7px;">תיאור המטלה</h3>
+                        <h1 class="red-star">שדה חובה</h1>
+                        <br />
+                        <br />
+                        <h3 class="sublabel">אנא הכנס/י תיאור מלא ומפורט של המטלה אותה את/ה מבקש/ת להוסיף. מומלץ להוסיף הדגמה של קלט ופלט של מקרי בדיקה פשוטים</h3>
+                        <div class="text-editor-container scale-up-center">
+                            <div id="editor" class="text-editor">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="tab_drawer_heading" rel="tab3">Tab 3</h3>
+                <div id="tab3" class="tab_content">
+                    <div class="description-container">
+                        <img src="newtask/img/coding.png" class="icon" />
+                        <h3 class="label" style="margin-bottom: 7px;">תבנית קוד המטלה</h3>
+                        <h1 class="red-star">שדה חובה</h1>
+                        <br />
+                        <br />
+                        <h3 class="sublabel">אנא הכנס/י בעורך קוד זה את תבנית הקוד הראשונית כפי שאת/ה מעוניין/ת שהיא תוצג למשתמש/ת בעת פתירת המטלה</h3>
+                        <br />
+                        <br />
+                        <h4 class="open-testcase-label">הינה מילה שמורה אשר מציינת את המיקום בו יופיעו מקרי הבדיקה למשתמש, בשום אופן אין לשלב אותה במהלך המטלה @{testcases} המילה</h4>
+                        <div class="editor-toolbar slide-in-top">
+                            <div class="action-buttons">
+
+                            </div>
+                            <div class="btn-in-editor-first" title="(Redo) חידוש פעולה">
+                                <img id="btn_redo" class="do_icon" src="editor/img/blueArrow.png" />
+                            </div>
+                            <div class="btn-in-editor" title="(Undo) ביטול פעולה">
+                                <img id="btn_undo" class="do_icon img-hor" src="editor/img/blueArrow.png" />
+                            </div>
+                            <div class="btn-in-editor" title="הגדלת פונט התצוגה" style="margin-left: 20px;">
+                                <img id="btn_fontup" class="do_icon" src="editor/img/fontup.png" />
+                            </div>
+                            <div class="btn-in-editor" title="הקטנת פונט התצוגה">
+                                <img id="btn_fontdown" class="do_icon" src="editor/img/fontdown.png" />
+                            </div>
+                        </div>
+                        <div class="code-editor-container scale-up-center">
+                            <div id="template-code-editor" class="format-code-editor"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- #tab2 -->
+                <h3 class="tab_drawer_heading" rel="tab4">Tab 4</h3>
+                <div id="tab4" class="tab_content scroll">
+                    <div class="input-format-container slide-in-left">
+                        <img src="img/input.png" class="icon" />
+                        <h3 class="label">מבנה הקלט</h3>
+                        <br />
+                        <br />
+                        <h1 class="sublabel">אנא הכנס/י את מבנה הקלט כפי שיוזן במקרי הבדיקה, מומלץ להסביר מה מייצג כל משתנה</h1>
+                        <div class="text-editor-container">
+                            <div id="input-format-editor" class="format-text-editor"></div>
+                        </div>
+                    </div>
+                    <div class="output-format-container slide-in-left250">
+                        <img src="img/output.png" class="icon" />
+                        <h3 class="label">מבנה הפלט</h3>
+                        <br />
+                        <br />
+                        <h1 class="sublabel">אנא הכנס/י תיאור של מבנה הפלט אותו את/ה מצפה לקבל מהמשתמש</h1>
+                        <div class="text-editor-container">
+                            <div id="output-format-editor" class="format-text-editor"></div>
+                        </div>
+                    </div>
+                    <div class="not-allowed-commands-container slide-in-left500" style="margin-bottom: 70px;">
+                        <img src="img/notallowed.png" class="icon" />
+                        <h3 class="label">פקודות אסורות לשימוש</h3>
+                        <br />
+                        <br />
+                        <h1 class="sublabel">'על מנת להעצים את האתגר, ביכולתך לאסור על השימוש בחלק מסט הפקודות של השפה בפתרון המטלה, על מנת להוסיף פקודה הזנ/י את שמה ולחצ/י 'אנטר</h1>
+                        <br />
+                        <br />
+                        <div id="notAllowedCommands"></div>
+                    </div>
+                </div>
+                <!-- #tab4 -->
+                <h3 class="tab_drawer_heading" rel="tab5">Tab 5</h3>
+                <div id="tab5" class="tab_content">
+                    <div id="testCasesTabBlock" class="testCasesTabBlock scale-up-center">
+                        <ul id="testCasesTabBlock-tabs" class="testCasesTabBlock-tabs">
+                            <li id="open-testcase-tab" class="is-active testCasesTabBlock-tab">(מקרה בדיקה (גלוי</li>
+                        </ul>
+                        <div id="testCasesTabBlock-content" class="testCasesTabBlock-content">
+                            <div id="open-testcase-pane" class="testCasesTabBlock-pane">
+                                <h4 class="open-testcase-label">מקרה בדיקה זה הינו חובה להזנה, הנתונים שיוזנו במקרה בדיקה זה בלבד יהיו גלויים למשתמש במטרה לסייע לו להבין טוב יותר את המטלה</h4>
+                                <br />
+                                <br />
+                                <br />
+                                <img src="img/input.png" class="icon" />
+                                <h3 class="label">קלט למשתמש</h3>
+                                <br />
+                                <br />
+                                <h1 class="sublabel">בתיבת הקוד הבאה יש להזין את המשתנים וערכיהם (באסמבלי) שיאותחלו בזכרון בטרם הרצת התוכנית, יש לוודא ששמות המשתנים זהים בכל מקרי הבדיקה</h1>
+                                <br />
+                                <div id="input-code-editor-0" class="input-code-editor"></div>
+                                <img src="img/output.png" class="icon" />
+                                <h3 class="label">פלט מהמשתמש</h3>
+                                <br />
+                                <br />
+                                <h1 class="sublabel">בתיבת הטקסט הבאה יש להזין, כטקסט חופשי (לא כקוד אסמבלי), את הפלט אשר מוגדר כפלט הנכון עבור מקרה בדיקה זה</h1>
+                                <br />
+                                <div id="output-code-editor-0" class="output-code-editor"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btn_AddTestcase" class="add-textcase">הוספת מקרה בדיקה ➕</button>
+                </div>
+                <!-- #tab3 -->
+
+            </div>
+        </div>
+
+        <div class="fade-in-bottom footerbar">
+            <button id="submit_button" class="submit_button"></button>
+            <div class="bottombar">
+
+                <input type="radio" rel="tab1" name="tap" id="t0" checked="checked" />
+                <label class="round" for="t0"><img src="newtask/img/settings.png" class="tab-icon" /></label>
+
+                <input type="radio" rel="tab2" name="tap" id="t1" />
+                <label class="round" for="t1"><img src="img/wirte-description.png" class="tab-icon" /></label>
+
+                <input type="radio" rel="tab3" name="tap" id="t2" />
+                <label class="round" for="t2"><img src="newtask/img/coding.png" class="tab-icon" /></label>
+
+                <input type="radio" rel="tab4" name="tap" id="t3" />
+                <label class="round" for="t3"><img src="newtask/img/io-settings.png" class="tab-icon" /></label>
+
+                <input type="radio" rel="tab5" name="tap" id="t4" />
+                <label class="round" for="t4"><img src="newtask/img/io-code.png" class="tab-icon" /></label>
+
+                <div class="div" id="back"></div>
+            </div>
+        </div>
+    </div>
+    <div class="cd-popup" role="alert">
+        <div class="cd-popup-container">
+            <p>שימ/י ❤: הינך עומד/ת לעזוב את הדף, במידה ובטופס קיים תוכן שאינו הועלה לענן ואינו נשמר כטיוטה הוא ימחק באופן שאינו ניתן לשחזור</p>
+            <ul class="cd-buttons">
+                <li class="prefer-to-exit"><a class="prefer-to-exit">רוצה לצאת</a></li>
+                <li class="prefer-to-stay"><a class="prefer-to-stay">מעדיפ/ה להשאר</a></li>
+            </ul>
+            <a class="cd-popup-close img-replace">Close</a>
+        </div>
+    </div>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.production.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.js"></script>
+    <script src='https://cdn.quilljs.com/1.3.6/quill.js'></script>
+
+    <script src="js/cipher.js"></script>
+    <script src="newtask/js/radiobuttons.js"></script>
+    <script src="newtask/js/draftlistItem.js"></script>
+    <script src="newtask/js/tags.js"></script>
+    <script src="newtask/js/tabs.js"></script>
+    <script src="newtask/js/input-output-tabs.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="newtask/js/main.js"></script>
+    <script src="newtask/js/popup.js"></script>
+    <script src="newtask/js/create-task.js"></script>
+</body>
+</html>

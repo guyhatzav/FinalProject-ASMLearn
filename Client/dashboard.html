@@ -1,0 +1,443 @@
+﻿<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>ASMLearn - אסמלרן</title>
+    <link rel="icon" href="img/icon.png">
+
+    <link href="https://fonts.googleapis.com/css?family=Secular+One&display=swap" rel="stylesheet">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-functions.js"></script>
+    <script src="js/init-firebase.js"></script>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="dashboard/css/dashboard.css">
+    <link rel="stylesheet" href="dashboard/css/loading.css">
+    <link rel="stylesheet" href="dashboard/css/switch.css">
+    <link rel="stylesheet" href="dashboard/css/submit-btn.css">
+    <link rel="stylesheet" href="dashboard/css/profile.css">
+    <link rel="stylesheet" href="dashboard/css/table.css">
+    <link rel="stylesheet" href="dashboard/css/textbox.css">
+    <link rel="stylesheet" href="dashboard/css/piechart.css">
+</head>
+<body>
+    <div id="changeProfileImageModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: rgb(240, 245, 245);">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" style="text-align:center;">החלפת תמונת פרופיל</h4>
+                </div>
+                <div class="modal-body" style="margin-bottom: 120px;">
+                    <img src="dashboard/img/profileImage.png" class="icon" />
+                    <h3 class="checklist-label">תמונת פרופיל</h3>
+                    <br />
+                    <h1 class="changeimage-sublabel">אנא הכנס/י את הקישור לתמונת הפרופיל שהנך מעוניינ/ת להציג</h1>
+                    <div class="omrs-input-group textbox-container">
+                        <label class="omrs-input-filled">
+                            <input id="txbChangeProfileImage" class="txb-task-name" required>
+                            <span class="omrs-input-label">קישור לתמונת הפרופיל</span>
+                        </label>
+                    </div>
+                    <br />
+                </div>
+                <button id="btn_changeProfileImage" class="submit_button"></button>
+                <button id="btn_cancelChangeProfileImage" class="cancel_button" type="button" data-dismiss="modal">ביטול</button>
+                <button id="btn_removeProfileImage" class="remove-profile-image">מחיקה 🗑️</button>
+
+            </div>
+
+        </div>
+    </div>
+    <div id="settingsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: rgb(240, 245, 245);">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <img src="dashboard/img/settings.png" style="width: 20px; height: 20px; display: inline;" />
+                    <h4 class="modal-title" style="text-align:center; display: inline; margin-left: 10px;">הגדרות</h4>
+                </div>
+                <div class="modal-body" style="margin-bottom: 60px;">
+                    <div class="settings-category-container">
+                        <img src="newtask/img/name.png" class="icon" />
+                        <h3 class="checklist-label">שם המשתמש</h3>
+                        <br />
+                        <h1 class="changeimage-sublabel">אנא הכנס/י את שם המשתמש החדש שהינך מעוניינ/ת להציג</h1>
+                        <div class="omrs-input-group settings-textbox-container">
+                            <label class="omrs-input-filled">
+                                <input id="txbUsername" class="txb-settings" required>
+                                <span class="omrs-input-label">שם המשתמש</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-category-container" style="height: 200px;">
+                        <img src="dashboard/img/email.png" class="icon" />
+                        <h3 class="checklist-label">כתובת דואר אלקטרוני</h3>
+                        <br />
+                        <h1 class="changeimage-sublabel" style="margin-right: -160px;">בשדה זה ניתנת לך האפשרות לשנות את כתובת הדוא"ל שבאמצעותה תתבצע ההתחברות לאתר</h1>
+                        <div class="omrs-input-group settings-textbox-container">
+                            <label class="omrs-input-filled">
+                                <input id="txbEmail" type="email" class="txb-settings" required>
+                                <span class="omrs-input-label">כתובת דוא"ל</span>
+                            </label>
+                        </div>
+                        <br />
+                        <h6 style="float: right; margin-top: -20px; margin-bottom: 35px; margin-right: 10px;"><b>:על מנת שנוכל לוודא שאת/ה אכן בעל/ת החשבון, אנא הזנ/י את הסיסמה לחשבונך ●</b></h6>
+                        <div class="omrs-input-group settings-textbox-container" style="margin-top: -30px;">
+                            <label class="omrs-input-filled">
+                                <input id="txbPasswordForNewEmail" autocomplete="off" type="password" class="txb-settings" required>
+                                <span class="omrs-input-label">סיסמה</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-category-container" style="height: 200px;">
+                        <img src="dashboard/img/password.png" class="icon" />
+                        <h3 class="checklist-label">סיסמה</h3>
+                        <h1 class="changeimage-sublabel" style="margin-top: 22px; margin-right: -50px;">בשדה זה ניתנת לך האפשרות לשנות את הסיסמה שבאמצעותה תתבצע ההתחברות לאתר</h1>
+                        <div class="omrs-input-group settings-textbox-container">
+                            <label class="omrs-input-filled">
+                                <input id="txbNewPassword" type="password" autocomplete="off" class="txb-settings" required>
+                                <span class="omrs-input-label">סיסמה חדשה</span>
+                            </label>
+                        </div>
+                        <h6 style="float: right; margin-top: -20px; margin-bottom: 35px; margin-right: 10px;"><b>:על מנת שנוכל לוודא שאת/ה אכן בעל/ת החשבון, אנא הזנ/י את הסיסמה לחשבונך ●</b></h6>
+                        <div class="omrs-input-group settings-textbox-container" style="margin-top: -30px;">
+                            <label class="omrs-input-filled">
+                                <input id="txbOldPassword" type="password" autocomplete="off" class="txb-settings" required>
+                                <span class="omrs-input-label">סיסמה ישנה</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+                <button id="btn_settingsSave" class="submit_button"></button>
+                <button id="btn_settingsCancel" class="cancel_button" type="button" data-dismiss="modal">ביטול</button>
+            </div>
+
+        </div>
+    </div>
+    <div style="text-align: center; width: 500px; margin: 0 auto;">
+        <img class="logo slide-bottom" oncontextmenu="return false" src="img/ASMLearnLogoWhite.png" />
+    </div>
+    <div class="card slide-right">
+        <div class="ds-top"></div>
+        <div class="avatar-holder" onclick=" $('#changeProfileImageModal').modal('show');">
+            <img id="profile-image" src="dashboard/img/noImage.jpg" onerror="this.src = 'dashboard/img/noImage.jpg'">
+        </div>
+        <div class="name">
+            <h3 id="user-name"></h3>
+        </div>
+
+        <button id="btn_settings" class="menu-btn" title="הגדרות" style="float: left;">
+            <img id="img_settings" src="dashboard/img/settings.png" title="הגדרות" style="width: 25px; height: 25px; margin-right: 1px;" />
+        </button>
+        <button id="btn_logout" class="menu-btn" title="התנתקות מהחשבון" style="float: right;">
+            <img id="img_logout" src="dashboard/img/logout.png" style="width: 25px; height: 25px; margin-left: 5px;" />
+        </button>
+
+        <div id="isAdmin" class="admin-label">
+            <h6 class="label-text">מנהל/ת מערכת</h6>
+        </div>
+        <div id="isTeacher" class="teacher-label">
+            <h6 class="label-text">מורה מאומת/ת</h6>
+        </div>
+        <div id="isStudent" class="student-label">
+            <h6 class="label-text">תלמיד/ה</h6>
+        </div>
+        <div class="ds-info">
+            <div class="ds pens">
+
+                <div class="stat-container">
+                    <p id="tasksSolved">0</p>
+                </div>
+                <h6 title="(מספר התרגילים שפתרת בהצלחה (תרגילים שהוגשו וכל מקרי הבדיקה נמצאו נכונים">נפתרו בהצלחה</h6>
+            </div>
+            <div class="ds projects">
+                <div class="stat-container">
+                    <p id="tasksPartiallySolved">0</p>
+                </div>
+                <h6 title="(מספר התרגילים שפתרת אך לא במלואם (תרגילים שהוגשו אך לא כל מקרי הבדיקה נמצאו נכונים">נפתרו חלקית</h6>
+            </div>
+            <div class="ds posts">
+                <div class="stat-container">
+                    <p id="unsolvedTasks">0</p>
+                </div>
+                <h6 title="מספר התרגילים במאגר שטרם פתרת">טרם נפתרו</h6>
+            </div>
+        </div>
+        <button id="new-task-btn" class="new-task-btn">יצירת תרגיל חדש</button>
+        <div id="chart-container" class="chart-container">
+            <br />
+            <img src="dashboard/img/pie-chart.png" class="icon" />
+            <h3 class="checklist-label">קצב התקדמות</h3>
+            <h1 class="checklist-sublabel">פילוח מצב התקדמותך בפתירת השאלות</h1>
+            <br />
+            <br />
+            <br />
+            <div class='chart-keymap-category' style="background-color: rgba(255,255,255,0.15); border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                <div class='chart-keymap-category-color-dot' style='background-color: rgba(59,181,74, 0.75)'></div>
+                <h2 class='chart-keymap-category-text'>נפתרו בהצלחה</h2>
+            </div>
+            <div class='chart-keymap-category' style="background-color: rgba(255,255,255,0.25);">
+                <div class='chart-keymap-category-color-dot' style='background-color: rgba(123,79,255, 0.75)'></div>
+                <h2 class='chart-keymap-category-text'>נפתרו חלקית</h2>
+            </div>
+            <div class='chart-keymap-category' style="background-color: rgba(255,255,255,0.15);  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                <div class='chart-keymap-category-color-dot' style='background-color: rgba(35,119,255, 0.75)'></div>
+                <h2 class='chart-keymap-category-text'>טרם נפתרו</h2>
+            </div>
+            <div id="pieChart" class="chart"></div>
+        </div>
+    </div>
+
+    <div class="top-container fade-in">
+        <table>
+            <thead>
+                <tr>
+                    <th>מחבר/ת</th>
+                    <th class="task-list-status-head">סטטוס</th>
+                    <th class="task-list-subject-head">נושא</th>
+                    <th class="task-list-difficulty-head">רמת קושי</th>
+                    <th>שם המטלה</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="taskslist-container" class="table-container fade-in">
+        <table>
+            <tbody id="taskslist">
+            </tbody>
+        </table>
+        <div id="tasks_loading" class="loading_supereffect">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="checklist slide-left">
+        <div class="category-with-title-container">
+
+            <img src="dashboard/img/solved.png" class="icon" />
+            <h3 class="checklist-label">סטטוס</h3>
+            <h1 class="checklist-sublabel">הצגת השאלות לפי מצב התקדמותך האישי</h1>
+            <br />
+            <div class="category-container">
+                <div class="checklist-item">
+                    <img src="editor/img/v.png" title="הגדרות" class="checklist-status-icon" />
+                    <h2 id="label_tasksSolved" class="checklist-checklabel">נפתרו במלואן</h2>
+                    <input type="checkbox" id="cb_tasksSolved" style="display:none" />
+                    <label for="cb_tasksSolved" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item" style="background-color: rgba(255,255,255,0.1)">
+                    <img src="editor/img/partiallySolved.png" title="הגדרות" class="checklist-status-icon" />
+                    <h2 class="checklist-checklabel">נפתרו חלקית</h2>
+                    <input type="checkbox" id="cb_tasksPartiallySolved" style="display:none" />
+                    <label for="cb_tasksPartiallySolved" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <img src="editor/img/unknown.png" title="הגדרות" class="checklist-status-icon" />
+                    <h2 class="checklist-checklabel">טרם נפתרו</h2>
+                    <input type="checkbox" id="cb_tasksLeft" style="display:none" />
+                    <label for="cb_tasksLeft" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="category-with-title-container">
+            <img src="dashboard/img/difficulty.png" class="icon" />
+            <h3 class="checklist-label">רמת קושי</h3>
+            <h1 class="checklist-sublabel">בחירת דרגת הקושי של השאלות שיוצגו</h1>
+            <br />
+            <div class="category-container">
+                <div class="checklist-item">
+                    <img src="dashboard/img/easy.png" class="checklist-difficulty-icon" />
+                    <h2 class="checklist-checklabel">קלה</h2>
+                    <input type="checkbox" id="cb_easy" style="display:none" />
+                    <label for="cb_easy" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item" style="background-color: rgba(255,255,255,0.1)">
+                    <img src="dashboard/img/medium.png" class="checklist-difficulty-icon" />
+                    <h2 class="checklist-checklabel">בינונית</h2>
+                    <input type="checkbox" id="cb_medium" style="display:none" />
+                    <label for="cb_medium" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <img src="dashboard/img/hard.png" class="checklist-difficulty-icon" />
+                    <h2 class="checklist-checklabel">קשה</h2>
+                    <input type="checkbox" id="cb_hard" style="display:none" />
+                    <label for="cb_hard" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="category-with-title-container">
+            <img src="newtask/img/categories-list.png" class="icon" />
+            <h3 class="checklist-label">קטגוריות</h3>
+            <h1 class="checklist-sublabel">בחירת נושאי הלימוד בהם יעסקו השאלות</h1>
+            <div class="category-container-full">
+                <div class="checklist-item">
+                    <div class="color-dot" style="background-color:	rgb(51, 89, 204)"></div>
+                    <h2 id="label_category_movarray" class="checklist-checklabel">שיטות מיעון ומערכים</h2>
+                    <input type="checkbox" id="cb_category_movarray" style="display:none" />
+                    <label for="cb_category_movarray" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item" style="background-color: rgba(255,255,255,0.1)">
+                    <div class="color-dot" style="background-color: rgba(67, 134, 45,1)"></div>
+                    <h2 id="label_category_aritlogic" class="checklist-checklabel">אריתמטיקה ולוגיקה</h2>
+                    <input type="checkbox" id="cb_category_aritlogic" style="display:none" />
+                    <label for="cb_category_aritlogic" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <div class="color-dot" style="background-color: rgb(191, 64, 64)"></div>
+                    <h2 id="label_category_loopif" class="checklist-checklabel">לולאות ומבני בקרה</h2>
+                    <input type="checkbox" id="cb_category_loopif" style="display:none" />
+                    <label for="cb_category_loopif" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item" style="background-color: rgba(255,255,255,0.1)">
+                    <div class="color-dot" style="background-color: rgb(191, 191, 64)"></div>
+                    <h2 id="label_category_stack" class="checklist-checklabel">מחסנית</h2>
+                    <input type="checkbox" id="cb_category_stack" style="display:none" />
+                    <label for="cb_category_stack" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item">
+                    <div class="color-dot" style="background-color: rgb(191, 128, 64)"></div>
+                    <h2 id="label_category_subroutines" class="checklist-checklabel">שגרות ומאקרו</h2>
+                    <input type="checkbox" id="cb_category_subroutines" style="display:none" />
+                    <label for="cb_category_subroutines" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+                <div class="checklist-item" style="background-color: rgba(255,255,255,0.1)">
+                    <div class="color-dot" style="background-color: rgb(128, 64, 191)"></div>
+                    <h2 id="label_category_interrupts" class="checklist-checklabel">פסיקות</h2>
+                    <input type="checkbox" id="cb_category_interrupts" style="display:none" />
+                    <label for="cb_category_interrupts" class="toggle">
+                        <span>
+                            <svg width="10px" height="10px" viewBox="0 0 10 10">
+                                <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>
+                            </svg>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <br />
+        </div>
+
+        <div class="checklist-submit-button">
+            <div class="fa fa-check done"></div>
+            <div class="fa fa-close failed"></div>
+
+            <input id="checklist-submit" class="checklist-submit" type="button" value="סינון תוצאות" />
+        </div>
+
+    </div>
+    <script src="js/cipher.js"></script>
+    <script src="dashboard/js/bubbly.js"></script>
+    <script src="dashboard/js/piechart.js"></script>
+    <script src="dashboard/js/dashboard.js"></script>
+
+</body>
+
+</html>

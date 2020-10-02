@@ -1,0 +1,107 @@
+﻿* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.table-container {
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 5px;
+    margin-bottom: auto;
+    top: 100px;
+    right: 317px;
+    bottom: 10px;
+    left: 317px;
+    width: auto;
+    height: auto;
+    position: absolute;
+    border-radius: 0.5em;
+    box-shadow: 0 10px 25px 5px rgba(0, 0, 0, 0.2);
+}
+.top-container {
+    margin-top: auto;
+    top: 70px;
+    right: 317px;
+    left: 317px;
+    width: auto;
+    height: auto;
+    table-layout: fixed;
+    position: absolute;
+    border-radius: 0.5em;
+    box-shadow: 0 10px 25px 5px rgba(0, 0, 0, 0.2);
+}
+.scale-up-center {
+    animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes scale-up-center {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+table {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    border-radius: 0.5em;
+    text-align: center;
+    table-layout: fixed;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    animation: scale-up-center 0.5s ease;
+}
+th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    table-layout: fixed;
+    background-color: rgba(255, 255, 255, 0.75);
+    color: black;
+}
+td {
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    table-layout: fixed;
+    cursor: pointer;
+    color: black;
+}
+tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+thead th {
+    background-color: rgba(255, 255, 255, 0.70);
+    font-weight: bold;
+    color: rgb(64, 64, 64);
+    font-family: 'Secular One', sans-serif;
+    font-size: 15px;
+    table-layout: fixed;
+}
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+tbody td {
+    position: relative;
+    table-layout: fixed;
+}
+tbody td:hover:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  z-index: -1;
+}
+
+@media only screen and (max-width: 950px) {
+    .table-container {
+        top: 120px;
+    }
+}

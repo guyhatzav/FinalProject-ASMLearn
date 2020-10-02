@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="he">
+<head>
+    <title>ASMLearn - אסמלרן</title>
+    <meta charset="UTF-8" />
+    <link href="https://fonts.googleapis.com/css?family=Secular+One&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="index/css/index.css" />
+    <link rel="icon" href="img/icon.png" />
+    <link rel="stylesheet" type="text/css" href="index/css/menu_cornermorph.css" />
+    <link rel="stylesheet" type="text/css" href="index/css/btn-submit.css" />
+    <link rel="stylesheet" type="text/css" href="index/css/our-team.css" />
+    <link rel="stylesheet" type="text/css" href="index/css/text-animation.css" />
+    <link rel="stylesheet" type="text/css" href="css/alertify.css" />
+
+    <script src="https://www.google.com/recaptcha/api.js" async=async defer=defer></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+    <script src="js/init-firebase.js"></script>
+</head>
+
+<body>
+    <object class="animated-bg" data="index/background-anim.html"></object>
+    <div class="menu-wrap">
+        <nav class="menu">
+            <nav class="menu">
+                <div id="login_menu" class="">
+                    <h1 class="login-title">התחברות</h1>
+                    <input id="txb_login_email" class="login-menu-input" type="email" placeholder="דואר אלקטרוני"
+                           onkeydown="loginTextInputKeyPressed()" />
+                    <input id="txb_login_password" class="login-menu-input" type="password" placeholder="סיסמה"
+                           onkeydown="loginTextInputKeyPressed()" />
+                    <button id="btn_send_login" class="btn_send_login"></button>
+                    <h6 class="login-menu-forgot-pass">Enter או הקש/י</h6>
+                </div>
+                <div id="signup_menu" class="hided">
+                    <h1 class="login-title">הרשמה</h1>
+                    <input id="txb_signup_email" class="login-menu-input" type="email" placeholder="דואר אלקטרוני"
+                           autocomplete="off" onkeydown="signupTextInputKeyPressed()" />
+                    <input id="txb_signup_password" class="login-menu-input" type="password" placeholder="סיסמה"
+                           autocomplete="off" onkeydown="signupTextInputKeyPressed()" />
+                    <input id="txb_signup_name" class="login-menu-input" type="text" placeholder="שם מלא"
+                           autocomplete="off" onkeydown="signupTextInputKeyPressed()" />
+                    <button id="btn_send_signup" class="btn_send_signup" style="margin-top: 170px;"></button>
+                    <h6 class="login-menu-forgot-pass" style="margin-top: 250px;">
+                        Enter או הקש/י
+                    </h6>
+                    <div class="g-recaptcha fade-in-bottom" data-sitekey="6LezfeYUAAAAAOGBJzXbPMvq5T14fOg7TCtAUOiS"
+                         data-callback="recaptch_callback"></div>
+                </div>
+            </nav>
+        </nav>
+    </div>
+    <div class="top-toolbar slide-bottom">
+        <div id="toolbar_state_out" class="toolbar-state">
+            <div id="btn_login" class="toolbar-login">התחברות</div>
+            <div id="btn_signup" class="toolbar-signup">הרשמה</div>
+        </div>
+    </div>
+    <div id="divMainForm" class="main-form">
+        <div class="green-bubble scale-in-center" oncontextmenu="return false">
+            <img src="https://i.imgur.com/WUG3G0H.png" class="hero-banner" />
+        </div>
+        <div class="main-form-content">
+            <div class="has-animation animation-ltr hero-titles" data-delay="10">
+                <p class="hero-title">,Low-Level שפת תכנות</p>
+                <p class="hero-title hero-start-margin">.High-Level איכות למידה</p>
+            </div>
+
+            <div class="has-animation animation-rtl" data-delay="1000">
+                <p class="vision-text">
+                    מאז המצאתן, קיבלו שפות התכנות החדישות תשומת לב נרחבת ברחבי האינטרנט
+                    בהשוואה לשפות הסף • כך שלמידתן והתרגול שלהן בקרב מתכנתים מתחילים
+                    נהפכה מהנה יותר, קלה יותר ומשמעותית יותר • בזמן הזה, שפות הסף נזנחו
+                    מאחור, על חומרי הלימוד וסביבות העבודה שעומדים לרשות מתכנתים המבקשים
+                    ללמוד ולתרגל את השפה אבד הכלח לפני זמן רב .
+                </p>
+                <p class="vision-text" style="margin-top: 0px;">
+                    אסמלרן כאן על מנת לשים סוף להזנחה הפושעת שקיבלו שפות הסף בכלל, ושפת
+                    האסמבלי בפרט • המטרה שעומדת לנגד ענינו היא להכניס את שפת האסמבלי
+                    למאה ה - 21 • ויתרה מכך, להביא את תרגול המשימות של השפה למאה ה - 21
+                    • על מנת לעשות כן, פיתחנו פלטפורמה עבור מורים ותמידים המעוניינים
+                    ללמוד וללמד את השפה • במערכת זו תוכלו למצוא סביבת עבודה נוחה לשפת
+                    האסמבלי ומגוון רחב של שאלות ותרגילים במגוון הנושאים שיש לשפת האסמבלי
+                    להציע, הצטרפו למסע שלנו להפיכת הלמידה של שפת האסמבלי למשמעותית
+                    וחוויתית הרבה יותר, והרשמו עכשיו!
+                </p>
+            </div>
+            <h1 class="our-team-title fade-in-bottom">:הצוות שלנו</h1>
+            <div class="our-team-container fade-in-bottom">
+                <div class="our-team" style="margin-right: 46px;">
+                    <div class="pic">
+                        <img src="https://i.imagesup.co/images2/15f8b03c8607ad57dd3461a53cd639c447d51113.jpg" />
+                        <div class="over-layer">
+                            <ul class="social-links">
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185981.svg"/></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185965.svg"/></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185964.svg"/></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185988.svg"/></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="team-content">
+                        <h3 class="team-title">גיא סלמן</h3>
+                        <span class="post">מפתח צד שרת</span>
+                        <p class="description">
+                            סטודנט להנדסת מחשבים באוניברסיטת בר-אילן
+                        </p>
+                    </div>
+                    <a href="#" class="read">יצירת קשר</a>
+                </div>
+                <div class="our-team" style="margin-right: 46px;">
+                    <div class="pic">
+                        <img src="https://i.imagesup.co/images2/3b75e148b920f9bc17265dcf4bfe1116b9a308bc.jpg" />
+                        <div class="over-layer">
+                            <ul class="social-links">
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185981.svg" /></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185965.svg" /></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185964.svg" /></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185988.svg" /></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="team-content">
+                        <h3 class="team-title">נועם סולן</h3>
+                        <span class="post">מפתח צד שרת</span>
+                        <p class="description">
+                            סטודנט להנדסת מחשבים באוניברסיטת בר-אילן
+                        </p>
+                    </div>
+                    <a href="#" class="read">יצירת קשר</a>
+                </div>
+                <div class="our-team">
+                    <div class="pic">
+                        <img src="https://i.imgur.com/c6x2BID.jpg" />
+                        <div class="over-layer">
+                            <ul class="social-links">
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185981.svg" /></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185965.svg" /></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185964.svg" /></a></li>
+                                <li><a href="#"><img src="https://image.flaticon.com/icons/svg/185/185988.svg" /></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="team-content">
+                        <h3 class="team-title">גיא חצב</h3>
+                        <span class="post">מפתח צד לקוח</span>
+                        <p class="description">
+                            סטודנט להנדסת מחשבים באוניברסיטת בר-אילן
+                        </p>
+                    </div>
+                    <a href="#" class="read">יצירת קשר</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="side-menu slide-bottom">
+        <img class="img-logo" oncontextmenu="return false" src="img/ASMLearnLogoWhite.png" />
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="index/js/main.js"></script>
+    <script src="js/alertify.js"></script>
+    <script src="index/js/index.js"></script>
+</body>
+</html>
