@@ -1,0 +1,890 @@
+﻿html, body {
+    background-image: url(https://i.imgur.com/aVznZ4v.jpg);
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+    font-family: Lato, sans-serif;
+    font-size: 15px;
+    margin: 0;
+    background-color: #483D8B;
+    height: 100%;
+    overflow: hidden;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+    *:focus {
+        outline: none;
+    }
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.icon {
+    float: right;
+    margin-right: 20px;
+    width: 30px;
+    height: 30px;
+    display: inline;
+}
+
+.task-property-container {
+    height: auto;
+    width: auto;
+    margin-top: 10px;
+}
+
+.task-description-container {
+    height: auto;
+    width: auto;
+    margin-top: 170px;
+}
+
+.task-property-container-with-bg {
+    height: auto;
+    display: block;
+    width: calc(100% - 20px);
+    float: right;
+    right: 10px;
+    border-radius: 20px;
+    padding: 20px;
+    position: absolute;
+    background-color: rgba(255,255,255, 0.1);
+}
+
+.do_icon {
+    width: 25px;
+    height: 25px;
+    display: inline;
+    cursor: pointer;
+    margin-top: -3px;
+}
+
+.img-hor {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+.deleteTask_button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 120px;
+    height: 30px;
+    margin-left: 20px;
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+    background-color: rgba(168, 36, 36,0.7);
+    border: 2px solid rgba(168, 36, 36,0.5);
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.2);
+    border-radius: 0.5em;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer !important;
+}
+    .deleteTask_button:hover {
+        background: rgb(168, 36, 36);
+        box-shadow: 0px 1px 5px 2px rgba(168, 36, 36,0.5);
+        color: rgba(255,255,255,0.7);
+    }
+.btn-in-editor {
+    background-color: rgba(255,255,255,0.75);
+    display: inline-block;
+    margin-top: 5px;
+    height: 30px;
+    padding: 5px 10px;
+    text-align: right;
+    border-radius: 0.5em;
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.btn-in-editor-first {
+    background-color: rgba(255,255,255,0.75);
+    display: inline-block;
+    margin-top: 5px;
+    height: 30px;
+    padding: 5px 10px;
+    margin-left: 70px;
+    text-align: right;
+    border-radius: 0.5em;
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.back-button {
+    float: right;
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.2);
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline;
+    cursor: pointer;
+}
+
+    .back-button:hover {
+        background-color: rgba(255,255,255,0.5);
+    }
+
+.task-name-box {
+    width: calc(100% - 95px);
+    padding: 5px;
+    padding-right: 10px;
+    text-align: right;
+    border-radius: 20px;
+    background-color: rgba(255,255,255,0.25);
+}
+
+.task-author-box {
+    width: calc(100% - 140px);
+    padding: 5px;
+    padding-right: 10px;
+    text-align: right;
+    border-radius: 20px;
+    margin-top: 16px;
+    margin-bottom: 10px;
+    background-color: rgba(255,255,255,0.25);
+}
+
+.task-author-label {
+    text-align: right;
+    float: right;
+    margin-right: 10px;
+    margin-top: 20px;
+    font-family: 'Secular One', sans-serif;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+}
+
+.mini-avatar-holder {
+    float: right;
+    margin-top: 10px;
+    margin-right: 30px;
+    width: 35px;
+    display: inline-block;
+    height: 35px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #151515, inset 0 0 0 5px #000000, inset 0 0 0 5px #000000, inset 0 0 0 5px #000000, inset 0 0 0 5px #000000;
+    background: white;
+    overflow: hidden;
+}
+
+.mini-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.task-difficulty-box {
+    float: right;
+    width: 90px;
+    height: 25px;
+    padding: 3px;
+    margin-top: 8px;
+    margin-right: 10px;
+    padding-right: 10px;
+    text-align: right;
+    font-size: 15px;
+    border-radius: 20px;
+    background-color: rgba(255,255,255,0.25);
+}
+
+.task-subject-box {
+    float: right;
+    width: 150px;
+    height: 25px;
+    padding: 5px;
+    margin-top: 8px;
+    margin-right: 10px;
+    padding-right: 10px;
+    text-align: right;
+    font-size: 15px;
+    border-radius: 20px;
+    background-color: rgba(255,255,255,0.25);
+}
+
+.task-status-box {
+    float: right;
+    width: 150px;
+    height: 25px;
+    padding: 5px;
+    margin-top: 8px;
+    margin-right: 10px;
+    padding-right: 10px;
+    text-align: right;
+    font-size: 15px;
+    border-radius: 20px;
+    background-color: rgba(255,255,255,0.25);
+}
+
+.difficulty-icon {
+    width: 18px;
+    height: 18px;
+    float: right;
+    margin-top: 1px;
+    margin-left: 8px;
+    display: inline;
+}
+
+.difficulty-item {
+    margin-top: 3px;
+    text-align: right;
+    font-size: 14px;
+}
+
+.task-name-label {
+    text-align: right;
+    float: right;
+    font-family: 'Secular One', sans-serif;
+    margin-right: 10px;
+    margin-top: 3px;
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+}
+
+.task-difficulty-label {
+    text-align: right;
+    float: right;
+    margin-right: 10px;
+    font-family: 'Secular One', sans-serif;
+    margin-top: 13px;
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+}
+
+.task-subject-label {
+    text-align: right;
+    float: right;
+    margin-right: 10px;
+    font-family: 'Secular One', sans-serif;
+    margin-top: 13px;
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+}
+
+.task-status-label {
+    text-align: right;
+    float: right;
+    margin-right: 10px;
+    font-family: 'Secular One', sans-serif;
+    margin-top: 13px;
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+}
+
+.task-subject-color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-top: 3px;
+    float: right;
+    display: inline-block;
+    box-shadow: 0 1px 5px #19304764;
+}
+
+.task-subject-item {
+    font-size: 14px;
+    display: inline;
+}
+
+.task-status-icon {
+    float: right;
+    margin-left: 10px;
+    width: 16px;
+    height: 16px;
+}
+
+.menu-label {
+    text-align: right;
+    float: right;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    color: rgb(64, 64, 64);
+    font-family: 'Secular One', sans-serif;
+}
+
+.menu-sublabel {
+    text-align: right;
+    float: right;
+    margin-top: -6px;
+    margin-right: 60px;
+    font-size: 13px;
+    display: block;
+    color: rgb(64, 64, 64);
+    font-family: 'Secular One', sans-serif;
+}
+
+.menu-box {
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 20px;
+    height: auto;
+    width: auto;
+    padding: 5px;
+    position: absolute;
+    font-size: 15px;
+    display: block;
+}
+
+img {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+main {
+    min-height: 100vh;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+/* Split the screen in half */
+.split {
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+}
+
+/* Control the left side */
+.left {
+    left: 0;
+    width: calc(50% - 15px);
+    margin: 10px;
+    margin-right: 0px;
+}
+
+/* Control the right side */
+.right {
+    right: 0;
+    width: calc(50% - 15px);
+    margin: 10px;
+    margin-left: 0px;
+}
+
+.title {
+    color: #fff;
+    text-align: center;
+    font-weight: 300;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    font-size: 2.8em;
+    margin-top: 1.5em;
+}
+
+    .title small {
+        display: block;
+        font-size: 0.6em;
+        margin-top: 0.4em;
+    }
+
+#editor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0px 6px 6px 6px rgba(0,0,0,0.25);
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.chat_button {
+    background-color: rgba(255,255,255,0.75);
+    display: inline-block;
+    height: 30px;
+    padding: 5px 10px;
+    position: absolute;
+    text-align: right;
+    border-radius: 0.5em;
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.2);
+    cursor: pointer;
+    right: 275px;
+    margin-top: 5px;
+}
+    .chat_button:hover {
+        color: #1ECD97;
+        background: white;
+    }
+.chat_btn_text {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: black;
+}
+
+.chat_btn_icon {
+    width: 20px;
+    vertical-align: middle;
+    margin-left: 10px;
+    height: 20px;
+    transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -ms-transition: all 0.4s;
+    -o-transition: all 0.4s;
+}
+
+.submit_button {
+    outline: none;
+    height: 30px;
+    float: right;
+    text-align: center;
+    width: 70px;
+    margin-top: 5px;
+    right: 5px;
+    border-radius: 0.5em;
+    position: absolute;
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.2);
+    background: #1ECD97;
+    border: 2px solid #1ECD97;
+    color: white;
+    letter-spacing: 1px;
+    text-shadow: 0;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+
+    .submit_button:hover {
+        color: #1ECD97;
+        background: rgba(255,255,255,0.75);
+    }
+
+    .submit_button:active {
+        letter-spacing: 2px;
+    }
+
+    .submit_button:after {
+        content: "הרצה ►";
+    }
+
+.save_button {
+    outline: none;
+    height: 30px;
+    float: right;
+    text-align: center;
+    width: 80px;
+    margin-top: 5px;
+    right: 80px;
+    border-radius: 0.5em;
+    position: absolute;
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.2);
+    background-color: rgba(255,255,255,0.75);
+    border: 0px solid rgba(255,255,255,0.75);
+    color: black;
+    text-shadow: 0;
+    font-size: 12px;
+    cursor: pointer;
+    -webkit-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+
+    .save_button:hover {
+        color: #1ECD97;
+        background: white;
+    }
+
+    .save_button:active {
+        letter-spacing: 2px;
+    }
+
+    .save_button:after {
+        content: "שמירה 💾";
+    }
+
+.onclic {
+    width: 30px;
+    border-color: #bbbbbb;
+    background: Gainsboro;
+    border-width: 3px;
+    font-size: 0;
+    border-radius: 30px;
+    border-left-color: #1ECD97;
+    -webkit-animation: rotating 2s 0.25s linear infinite;
+    animation: rotating 2s 0.25s linear infinite;
+}
+
+    .onclic:after {
+        content: "";
+    }
+
+    .onclic:hover {
+        color: #1ECD97;
+        background: Gainsboro;
+    }
+
+.validate {
+    font-size: 13px;
+    color: white;
+    background: #1ECD97;
+}
+
+    .validate:after {
+        font-family: 'FontAwesome';
+        content: "\f00c";
+    }
+
+.validate-light {
+    font-size: 13px;
+    color: #1ECD97;
+    background-color: rgba(255,255,255,0.75);
+}
+
+    .validate-light:after {
+        font-family: 'FontAwesome';
+        content: "\f00c";
+    }
+
+.invalidate {
+    font-size: 13px;
+    color: white;
+    background: rgb(247,103,7);
+}
+
+    .invalidate:after {
+        font-family: 'FontAwesome';
+        content: "\f00d";
+    }
+
+
+@-webkit-keyframes rotating {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotating {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.window-header2 {
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
+    height: inherit;
+    width: inherit;
+    background-color: black;
+    opacity: 0.5;
+    box-shadow: 6px 6px 6px 6px rgba(0,0,0,0.25);
+    position: absolute;
+}
+
+.editor-toolbar {
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
+    height: 40px;
+    width: 100%;
+    box-shadow: 6px 6px 6px 6px rgba(0,0,0,0.25);
+    background-color: rgba(220,220,220,0.7);
+    position: absolute;
+}
+
+.window-body {
+    display: block;
+    position: absolute;
+    height: auto;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: inherit;
+    margin: 10px;
+    margin-top: 50px;
+    float: left;
+    position: fixed;
+}
+
+.window-body2 {
+    display: block;
+    position: absolute;
+    width: inherit;
+    height: auto;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    position: fixed;
+    float: right;
+    margin: 10px;
+    padding: 10px;
+    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    background-color: rgba(255,255,255,0.5);
+}
+
+.editor-toolbar .action-buttons {
+    position: absolute;
+    left: 10px;
+    margin-top: 13px;
+    width: 10px;
+    height: 10px;
+    background: Crimson;
+    border-radius: 50%;
+    box-shadow: 15px 0 0 Orange, 30px 0 0 LimeGreen;
+}
+
+.editor-toolbar .language {
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    margin-top: -10px;
+    height: 21px;
+    padding: 0 1em;
+    text-align: right;
+    -webkit-appearance: none;
+    border: none;
+    background: transparent;
+    font-family: Lato, sans-serif;
+    color: DimGrey;
+}
+
+.window .editor-toolbar .language:before {
+    content: 'asd';
+}
+
+.window .editor-toolbar .language:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+
+.tags {
+    background-color: rgba(255,255,255,0.3);
+    padding: 5px;
+    direction: rtl;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.tag {
+    color: black;
+    background: rgba(204, 217, 255, 0.5);
+    box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.2);
+    float: left;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 10em;
+    margin: 5px;
+}
+
+    .tag button {
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+    }
+
+code {
+    font-size: 12px;
+    background: #FCF8D0;
+    display: inline-block;
+    font-family: courier;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+small {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-top: 10px;
+    display: block;
+    line-height: 16px;
+}
+
+.window .window-body .code-input,
+.window .window-body .code-output {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    border: none;
+    font-family: 'PT Mono', monospace;
+    font-size: 0.8rem;
+    background: transparent;
+    white-space: pre-wrap;
+    line-height: 1.5em;
+    word-wrap: break-word;
+}
+
+.window .window-body .code-input {
+    opacity: 0.7;
+    margin: 0;
+    color: #999;
+    resize: none;
+}
+
+.window .window-body .code-output {
+    pointer-events: none;
+    z-index: 3;
+    margin: 0;
+    overflow-y: auto;
+}
+
+    .window .window-body .code-output code {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 1rem;
+        display: block;
+        color: #666;
+        font-size: 0.8rem;
+        font-family: 'PT Mono', monospace;
+    }
+
+a.token {
+    text-decoration: none;
+}
+
+.token.selector,
+.token.punctuation,
+.token.keyword {
+    color: PaleVioletRed;
+}
+
+.token.property,
+.token.number,
+.token.string,
+.token.punctuation,
+.token.tag-id {
+    color: DodgerBlue;
+}
+
+.token.function,
+.token.attr-name {
+    color: CadetBlue;
+}
+
+.token.atrule .atrule-id {
+    color: BlueViolet;
+}
+
+.token.boolean {
+    color: LightSlateGray;
+}
+
+.token.comment {
+    color: DarkGrey;
+}
+
+.language-php .variable {
+    color: CadetBlue;
+}
+
+@media only screen and (max-width: 1400px) {
+    .task-subject-label {
+        margin-top: 50px;
+        margin-right: -175px;
+    }
+
+    .task-subject-box {
+        margin-top: 45px;
+        margin-right: -120px;
+    }
+
+    .task-status-label {
+        margin-top: 85px;
+        margin-right: -205px;
+    }
+
+    .task-status-box {
+        margin-top: 82px;
+        margin-right: -150px;
+    }
+
+    .task-description-container {
+        margin-top: 250px;
+    }
+}
+
+.slide-in-top {
+    animation: slide-in-top .5s cubic-bezier(.25,.46,.45,.94) both
+}
+
+@keyframes slide-in-top {
+    0% {
+        transform: translateY(-1000px);
+        opacity: 0
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    .editor-toolbar {
+        height: 80px;
+    }
+
+    .window-body {
+        margin-top: 90px;
+    }
+
+    .btn-in-editor-first {
+        margin-top: 45px;
+        margin-left: 10px;
+    }
+}
+
+.scale-up-center {
+    animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes scale-up-center {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

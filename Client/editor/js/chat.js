@@ -1,0 +1,165 @@
+﻿const { css, transform, chain, delay, tween, easing, parallel } = window.popmotion;
+const { interpolate } = transform;
+
+let trigger;
+let isClosing = false;
+let isChatModalOpen = false;
+
+// Select DOM
+const chat_modal = document.querySelector('.chat-modal');
+
+// Create CSS renderers
+const dimmerRenderer = css(document.querySelector('.chat-overlay'));
+const modalContainerRenderer = css(document.querySelector('.chat-modal-container'));
+const modalRenderer = css(chat_modal);
+
+// Return the center x, y of a bounding box
+function findCenter({ top, left, height, width }) {
+  return { x: (left + width / 2), y: (top + height / 2) };
+}
+
+/*
+    Generate a function that will take a progress value (0 - 1)
+    and use that to tween the modal from the source to the destination
+    bounding boxes
+  */
+const vRange = [0, 1];
+function generateModalTweener(sourceBBox, destinationBBox) {
+  const sourceCenter = findCenter(sourceBBox);
+  const destinationCenter = findCenter(destinationBBox);
+
+  const toX = interpolate(vRange, [sourceCenter.x - destinationCenter.x, 0]);
+  const toY = interpolate(vRange, [sourceCenter.y - destinationCenter.y, 0]);
+  const toScaleX = interpolate(vRange, [sourceBBox.width / destinationBBox.width, 1]);
+  const toScaleY = interpolate(vRange, [sourceBBox.height / destinationBBox.height, 1]);
+
+  return v => modalRenderer.set({
+    opacity: v,
+    x: toX(v),
+    y: toY(v),
+    scaleX: toScaleX(v),
+    scaleY: toScaleY(v) });
+
+}
+
+function openChatModal(e) {
+    if (e.target && e.target.classList.contains('chat_open') && !isChatModalOpen) {
+    isChatModalOpen = true;
+    trigger = e.target;
+
+    // Get bounding box of triggering element
+    const triggerBBox = trigger.getBoundingClientRect();
+
+    // Temporarily show modal container to measure modal
+    dimmerRenderer.set('display', 'block').render();
+    modalContainerRenderer.set('display', 'flex').render();
+    modalRenderer.set('opacity', 0).render();
+
+    // Get bounding box of final modal position
+      const modalBBox = chat_modal.getBoundingClientRect();
+
+    // Get a function to tween the modal from the trigger
+    const modalTweener = generateModalTweener(triggerBBox, modalBBox);
+
+    // Fade in overlay
+    tween({
+      duration: 200,
+      onUpdate: v => dimmerRenderer.set('opacity', v) }).
+    start();
+
+    chain([
+    delay(75),
+    tween({
+      duration: 200,
+      ease: easing.easeOut,
+      onUpdate: modalTweener })]).
+
+    start();
+  }
+}
+
+function closeComplete() {
+    isClosing = false;
+    dimmerRenderer.set('display', 'none').render();
+    modalContainerRenderer.set('display', 'none').render();
+    modalRenderer.set({
+        y: 0,
+        scaleX: 1,
+        scaleY: 1,
+        transformOrigin: '50% 50%'
+    });
+    isChatModalOpen = false;
+
+}
+
+function cancelChatModal(e) {
+  if (e.target && e.target.classList.contains('cancel-chat-modal') && !isClosing) {
+    e.stopPropagation();
+    isClosing = true;
+
+    const triggerBBox = trigger.getBoundingClientRect();
+      const modalBBox = chat_modal.getBoundingClientRect();
+
+    const modalTweener = generateModalTweener(triggerBBox, modalBBox);
+
+    parallel([
+    tween({
+      from: dimmerRenderer.get('opacity'),
+      to: 0,
+      onUpdate: v => dimmerRenderer.set('opacity', v) }),
+
+    tween({
+      from: modalRenderer.get('opacity'),
+      to: 0,
+      duration: 250,
+      onUpdate: modalTweener,
+      onComplete: closeComplete })]).
+
+    start();
+  }
+}
+
+function submitChatModal(e) {
+  if (isClosing) return;
+  e.stopPropagation();
+
+  isClosing = true;
+
+  const toScaleXIn = interpolate(vRange, [1, 1.2]);
+  const toScaleYIn = interpolate(vRange, [1, 0.8]);
+
+  const toScaleXOut = interpolate(vRange, [1.2, 0.5]);
+  const toScaleYOut = interpolate(vRange, [0.8, 2]);
+
+  chain([
+  tween({
+    onStart: () => modalRenderer.set('transform-origin', '50% 100%'),
+    duration: 200,
+    onUpdate: v => modalRenderer.set({
+      scaleX: toScaleXIn(v),
+      scaleY: toScaleYIn(v),
+      y: v * 100 }) }),
+
+
+  parallel([
+  tween({
+    from: dimmerRenderer.get('opacity'),
+    to: 0,
+    onUpdate: v => dimmerRenderer.set('opacity', v) }),
+
+  tween({
+    onUpdate: v => modalRenderer.set({
+      opacity: 1 - v,
+      scaleX: toScaleXOut(v),
+      scaleY: toScaleYOut(v),
+      y: -300 * easing.easeIn(v) }),
+
+    duration: 200,
+    onComplete: closeComplete })])]).
+
+
+  start();
+}
+
+document.addEventListener('click', openChatModal);
+document.addEventListener('click', cancelChatModal);

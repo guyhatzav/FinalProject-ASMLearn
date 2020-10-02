@@ -1,0 +1,437 @@
+﻿:root {
+    --main-grey: rgb(246,247,252);
+    --main-dark-green: rgb(42,84,96);
+    --half-main-dark-green: rgba(42,84,96, 0.5);
+    --main-purple: rgb(50,55,89);
+    --side-menu-width: 250px;
+}
+
+*:focus {
+    outline: none;
+}
+input:focus::placeholder {
+    color: transparent;
+}
+
+html, body {
+    background-color: var(--main-grey);
+    overflow:hidden;
+}
+
+img {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.animated-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom:0;
+    overflow: hidden;
+}
+
+.g-recaptcha{
+    margin-left: 50px;
+}
+
+ul {
+    list-style-type: none;
+}
+.main-form-content {
+    position: absolute;
+    display: inline;
+    width: calc(100% - 500px);
+    height: 100%;
+    left: 0;
+}
+.main-form {
+    position: absolute;
+    display: inline;
+    top: 60px;
+    left: 0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    width: 100%;
+    height: calc(100% - 60px);
+}
+.side-menu {
+    background-color: var(--main-dark-green);
+    height: 60px;
+    width: var(--side-menu-width);
+    float: left;
+    top: 0;
+    left: 0;
+    position: absolute;
+    box-shadow: 0 1px 5px #19304764;
+}
+
+.side-menu-list {
+    left: 0;
+    display: block;
+    position: relative;
+    margin-top: 50px;
+    margin-right: 50px;
+    width: 100%;
+}
+
+.login-title {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: rgb(64, 64, 64);
+    font-size: 30px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Secular One', sans-serif;
+}
+.btn_send_signup:hover {
+    color: white;
+    background: var(--main-purple);
+}
+
+.btn_send_signup:active {
+    letter-spacing: 2px;
+    background-color: var(--main-purple);
+}
+
+.btn_send_signup:after {
+    content: "הרשמ/י";
+}
+
+.btn_send_signup {
+    display: block;
+    position: absolute;
+    outline: none;
+    height: 40px;
+    text-align: center;
+    width: 200px;
+    margin-top: 120px;
+    border-radius: 40px;
+    margin-left: 100px;
+    background: var(--main-dark-green);
+    border: 3px solid var(--main-dark-green);
+    color: var(--main-grey);
+    letter-spacing: 1px;
+    font-family: 'Secular One', sans-serif;
+    text-shadow: 0;
+    font-size: 15px;
+    font-weight: lighter;
+    cursor: pointer;
+    -webkit-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+
+.btn_send_login:hover {
+    color: white;
+    background: var(--main-purple);
+}
+
+.btn_send_login:active {
+    letter-spacing: 2px;
+    background-color: var(--main-purple);
+}
+
+.btn_send_login:after {
+    content: "התחבר/י";
+}
+.btn_send_login {
+    display: block;
+    position: absolute;
+    outline: none;
+    height: 40px;
+    text-align: center;
+    width: 200px;
+    margin-top: 120px;
+    border-radius: 40px;
+    margin-left: 100px;
+    background: var(--main-dark-green);
+    border: 3px solid var(--main-dark-green);
+    color: var(--main-grey);
+    letter-spacing: 1px;
+    font-family: 'Secular One', sans-serif;
+    text-shadow: 0;
+    font-size: 15px;
+    font-weight: lighter;
+    cursor: pointer;
+    -webkit-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+
+.login-menu-input {
+    float: left;
+    font-family: 'Secular One', sans-serif;
+    text-align: center;
+    width: calc(100% - 100px);
+    margin-left: 45px;
+    padding: 5px;
+    font-size: 15px;
+    font-weight: lighter;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(242, 242, 242);
+}
+.login-menu-forgot-pass {
+    font-family: 'Secular One', sans-serif;
+    font-size: 15px;
+    margin-top: 200px;
+   
+    font-weight: lighter;
+    color: rgb(179, 179, 179);
+    text-align: center;
+    display: block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+    .login-menu-forgot-pass:hover {
+        color: rgb(166, 166, 166);
+    }
+
+.side-menu-list-item {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: 'Secular One', sans-serif;
+    margin-top: 30px;
+    float: right;
+    margin-right: 40px;
+    padding: 8px;
+    text-align: center;
+    cursor: pointer;
+    width: calc(var(--side-menu-width) - 50px);
+    display: block;
+    font-size: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    color: rgb(148, 150,174);
+}
+
+.item-selected {
+    color: white;
+    background-color: var(--main-pink);
+}
+.hided {
+   display: none;
+}
+
+.img-logo {
+    width: 180px;
+    margin: auto;
+    display: block;
+    margin-top: 8px;
+}
+.vision-text {
+    font-family: 'Secular One', sans-serif;
+    margin-left: 300px;
+    font-size: 18px;
+    background-color: rgba(246,247,252,0.75);
+    margin-top: 150px;
+    height: auto;
+    border-radius: 20px;
+    padding: 10px;
+    direction: rtl;
+    text-align: right;
+    font-weight: lighter;
+    color: rgb(108, 139, 147);
+}
+.slide-bottom {
+    animation: slide-bottom 1s cubic-bezier(.25,.46,.45,.94) both
+}
+
+@keyframes slide-bottom {
+    0% {
+        transform: translateY(-50px)
+    }
+
+    100% {
+        transform: translateY(0px)
+    }
+}
+.top-toolbar {
+    width: calc(100% - var(--side-menu-width));
+    height: 60px;
+    top: 0px;
+    left: var(--side-menu-width);
+    background-color: rgb(253, 253, 253);
+    position: absolute;
+    box-shadow: 0 1px 5px #19304764;
+}
+
+.toolbar-icon {
+    width: 25px;
+    height: 25px;
+    margin: 15px;
+    margin-right: 30px;
+    margin-top: 17px;
+    float: right;
+    cursor: pointer;
+}
+
+.toolbar-profile-image {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    margin: 5px; 
+    margin-top: 10px;
+    border: 2px solid var(--main-pink);
+    display: inline;
+
+}
+.toolbar-seperator {
+    height: 22px;
+    width: 1px;
+    display: inline;
+    float: right;
+    margin-top: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: rgb(210, 210, 210);
+}
+.toolbar-profile-container {
+    height: 100%;
+    width: initial;
+    float: right;
+    margin-right: 100px;
+    cursor: pointer;
+}
+.toolbar-profile-name {
+    font-family: 'Secular One', sans-serif;
+    color: rgb(140, 140, 140);
+    font-size: 15px;
+    display: inline-block;
+    text-align: center;
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 5px;
+    font-weight: lighter;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  
+}
+
+.toolbar-state {
+    width: 100%;
+    height: 100%;
+}
+
+.toolbar-login {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    cursor: pointer;
+    margin-top: 10px;
+    float: right;
+    color: var(--main-dark-green);
+    border: 3px solid var(--main-dark-green);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    font-family: 'Secular One', sans-serif;
+    font-size: 15px;
+    width: 70px;
+    text-align: center;
+    height: 20px;
+    margin-right: 10px;
+    background-color: white;
+    border-radius: 20px;
+}
+.scale-in-center {
+    animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+@keyframes scale-in-center {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.green-bubble {
+    background-color: var(--half-main-dark-green);
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    float: right;
+    top: 20px;
+    right: -200px;
+    border-radius: 50%;
+}
+.hero-banner {
+    width: 450px;
+    margin-left: -70px;
+    margin-top: 120px;
+   
+}
+.hero-titles {
+    position: absolute;
+    display: inline-block;
+    width: 700px;
+    float: right;
+    right: 0;
+    margin-top: 20px;
+    height: auto;
+}
+.hero-title {
+    font-size: 40px;
+    float: right;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: bolder;
+    font-family: 'Secular One', sans-serif;
+    color: var(--main-dark-green);
+}
+.our-team-title {
+    font-size: 25px;
+    display: inline;
+    float: right;
+    font-family: 'Secular One', sans-serif;
+    color: var(--main-dark-green);
+}
+.hero-start-margin {
+    margin-right: 200px;
+}
+
+.toolbar-signup {
+    cursor: pointer;
+    text-align: center;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    float: right;
+    margin-top: 10px;
+    color: white;
+    width: 70px;
+    height: 20px;
+    margin-right: 10px;
+    border: 3px solid var(--main-dark-green);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    font-family: 'Secular One', sans-serif;
+    font-size: 15px;
+    background-color: var(--main-dark-green);
+    border-radius: 20px;
+}

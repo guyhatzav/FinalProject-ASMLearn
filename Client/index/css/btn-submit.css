@@ -1,0 +1,56 @@
+.onclic {
+    width: 40px;
+    border-color: #bbbbbb;
+    border-width: 4px;
+    font-size: 0;
+    margin-left: 180px;
+    background: rgb(246,247,252);
+    border-left-color: rgb(50,55,89);
+    -webkit-animation: rotating 2s 0.25s linear infinite;
+    animation: rotating 2s 0.25s linear infinite;
+}
+
+    .onclic:after {
+        
+        content: "";
+    }
+
+    .onclic:hover {
+        color: rgb(246,247,252);
+        background: white;
+    }
+
+.validate {
+    font-size: 13px;
+    color: white;
+    background-color: rgb(50,55,89);
+}
+
+    .validate:after {
+        font-family: 'FontAwesome';
+        content: "\f00c";
+    }
+
+@-webkit-keyframes rotating {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotating {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
