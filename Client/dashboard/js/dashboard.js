@@ -53,7 +53,7 @@ function getQueriesHelper(queries, text = null) {
     if (Boolean(cb_hard.checked)) { queries.push(`3${text != null ? ('_' + text) : '' }`) }
 }
 
-//translates the checkboxes checks to string queries.
+//translating the checkboxes checks to string queries.
 function getQueries() {
     if (isTasksSolvedChecked && isTasksPartiallySolvedChecked && isTasksLeftChecked) {
         isTasksLeftChecked = false;
@@ -306,6 +306,7 @@ function getTaskStatus(taskID) {
     if (tasksPartiallySolvedList.includes(taskID)) return 2;
     return 3;
 }
+//converting the status text from the server to a HTML Element
 function getStatusCode(status) {
     switch (status) {
         case 1: return getStatusCodeHelper('rgba(153, 255, 153, 0.15)', 'v', 'נפתרה');
@@ -318,22 +319,26 @@ function getStatusCodeHelper(bColor, imgName, text) {
        <img src="editor/img/${imgName}.png" class="task-list-status-icon" />
        <h2 class='task-list-status-item'>${text}</h2 ></div>`;
 }
+//getting the task author from the list and creating HTML element.
 function getAuthorHTMLCode(uid) {
     arr = knownAuthors.get(uid);
     return (arr !== null) ? `</div><div class='mini-avatar-holder'><img class='mini-img' onerror="this.src = 'dashboard/img/noImage.jpg'" src='${(arr[1] !== null) ? arr[1] : noProfileImageURL}'/></div><div class='author-name-holder'><h3 class='task-author-name'>${arr[0]}</h3>` : null;
 }
+//transfering to the newtask page.
 btn_newTask.addEventListener('click', e => {
     if (isTeacher) {
         localStorage.removeItem('taskID');
         window.location = 'newtask.html';
     }
 });
+//signing out and transfers the user to the landing page.
 document.getElementById('btn_logout').addEventListener('click', e => {
     auth.signOut().then(() => {
         window.localStorage.clear();
         window.location = 'index.html';
     });
 });
+//updating user's profile image from page & cloud.
 btn_changeProfileImage.addEventListener('click', e => {
     btn_changeProfileImage.classList.add('onclic');
     const photoURL = String(document.getElementById('txbChangeProfileImage').value);
@@ -347,15 +352,18 @@ btn_changeProfileImage.addEventListener('click', e => {
         }, 1000);
     });
 });
+//removing user's profile image from page & cloud.
 document.getElementById('btn_removeProfileImage').addEventListener('click', e => {
     auth.currentUser.updateProfile({ photoURL: null }).then(() => {
         img_profile.src = noProfileImageURL;
         $('#changeProfileImageModal').modal('hide');
     });
 });
+//openning the settings menu modal.
 document.getElementById('btn_settings').addEventListener('click', e => {
     $('#settingsModal').modal('show')
 });
+//saving the settings form to the cloud after creds check.
 document.getElementById('btn_settingsSave').addEventListener('click', e => {
     const txt_PasswordForNewEmail = document.getElementById('txbPasswordForNewEmail');
     const txt_changePasswordNew = document.getElementById('txbNewPassword');
