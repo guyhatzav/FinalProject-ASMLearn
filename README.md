@@ -1,9 +1,12 @@
-# <a href="https://asmlearn.com/"><img src="https://asm-learn.web.app/img/ASMLearnLogoBlack.png" width="200"></a>
+<div dir="rtl">
+<a href="https://asmlearn.com/"><img src="https://asm-learn.web.app/img/ASMLearnLogoBlack.png" width="200"></a>
 
 [![](https://img.shields.io/badge/Engine-Docs-lightgray)](https://solanoam.github.io/assembler-submit-engine/)
-[![](https://img.shields.io/badge/Firebase-v7.16.1-blue)](https://firebase.google.com/docs/web/setup?authuser=0#from-the-cdn)
+[![](https://img.shields.io/badge/Firebase-v7.19.0-blue)](https://firebase.google.com/docs/web/setup?authuser=0#from-the-cdn)
 
-<h6 style="background-color: #f2f2f2;">הערה: תיעוד זה מקיף את פרויקט הממשק האינטרנטי בלבד, על מנת לצפות בתיעוד צד המנוע יש להכנס לקישור שבתגיות</h6>
+```diff
+הערה: תיעוד זה מקיף את פרויקט הממשק האינטרנטי בלבד, על מנת לצפות בתיעוד צד המנוע יש להכנס לקישור שבתגיות 
+```
 
 Since their invention, the high-level programming languages have received much widespread attention across the internet compared to the old low-level languages,
 so their practice among beginner programmers has become more enjoyable, easier and more meaningful.
@@ -11,9 +14,9 @@ During this time, the low-level languages have been left behind, the learning ma
 
 ASMLearn is here to bring to an end the criminal negligence. Our goal is to bring the assembly language into the 21st century by making with the language's task practice into the 21st century. In order to do so, we have developed a platform for students and teachers who want to teach and learn the language. In this system you will find a comfortable workspace environment and a wide range of exercises on a variety of topics the assembly language has to offer.
 
-# Project's Structure
+# מבנה הפרויקט
 
-# Built With:
+# נבנה בעזרת:
 <ul>
   <li>HTML 5</li>  
   <li>CSS</li> 
@@ -54,3 +57,6 @@ ASMLearn is here to bring to an end the criminal negligence. Our goal is to brin
   <li><h4>Guy Hatzav (Linkedin: <a href="https://www.linkedin.com/in/guyhatzav/">@guyhatzav</a>)</h4></li>
 </ul>
 <h4>Under the coaching of <a href="https://www.eng.biu.ac.il/gellesr/">Dr. Ran Gelles</a></h4>
+
+</div>
+
