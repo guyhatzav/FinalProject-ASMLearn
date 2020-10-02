@@ -52,11 +52,11 @@ ASMLearn is here to bring to an end the criminal negligence. Our goal is to brin
 </li> 
 </ul>   
 
-# Developed by:
+# פותח ע"י:
 <ul>
-  <li><h4>Guy Hatzav (Linkedin: <a href="https://www.linkedin.com/in/guyhatzav/">@guyhatzav</a>)</h4></li>
+  <li><h4>גיא חצב (Linkedin: <a href="https://www.linkedin.com/in/guyhatzav/">@guyhatzav</a>)</h4></li>
 </ul>
-<h4>Under the coaching of <a href="https://www.eng.biu.ac.il/gellesr/">Dr. Ran Gelles</a></h4>
+<h4><a href="https://www.eng.biu.ac.il/gellesr/">ד"ר רן גלס</a> תחת הנחייתו של</h4>
 
 </div>
 
