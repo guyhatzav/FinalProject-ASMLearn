@@ -1,16 +1,12 @@
 <div dir="rtl">
 <p align="center">
   <a href="https://asmlearn.com/"><img src="https://asm-learn.web.app/img/ASMLearnLogoBlack.png" width="200"></a>
-  
 </p>
 <p align="center">
    <a href="https://solanoam.github.io/assembler-submit-engine/"><img src="https://img.shields.io/badge/Engine-Docs-lightgray"></a>
-
-  
+   <a href="https://firebase.google.com/docs/web/setup?authuser=0#from-the-cdn/"><img src="https://img.shields.io/badge/Firebase-v7.19.0-blue"></a>
+   <a href="https://asmlearn.com/"><img src="https://img.shields.io/badge/Version-v1.0.0-lightblue"></a>
 </p>
-
-[![](https://img.shields.io/badge/Firebase-v7.19.0-blue)](https://firebase.google.com/docs/web/setup?authuser=0#from-the-cdn)
-[![](https://img.shields.io/badge/Version-v1.0.0-lightblue)](https://asmlearn.com/)
 
 ```diff
 הערה: תיעוד זה מקיף את פרויקט הממשק האינטרנטי בלבד, על מנת לצפות בתיעוד צד המנוע יש להכנס לקישור שבתגיות 
