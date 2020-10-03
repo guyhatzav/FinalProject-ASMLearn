@@ -8,11 +8,9 @@
 הערה: תיעוד זה מקיף את פרויקט הממשק האינטרנטי בלבד, על מנת לצפות בתיעוד צד המנוע יש להכנס לקישור שבתגיות 
 ```
 
-Since their invention, the high-level programming languages have received much widespread attention across the internet compared to the old low-level languages,
-so their practice among beginner programmers has become more enjoyable, easier and more meaningful.
-During this time, the low-level languages have been left behind, the learning materials and workspaces available to programmers who wish to learn and practice the language become obsolete and irrelevant.
+מאז המצאתן, שפות התכנות העיליות זכו לתשומת לב נרחבת ברחבי האינטרנט בהשוואה לשפות הסף, כך שהפרקטיקה שלהן בקרב מתכנתים מתחילים הפכה למהנה יותר, קלה ומשמעותית יותר. במהלך תקופה זו, השפות ברמה הנמוכה הושארו מאחור, חומרי הלמידה ושטחי העבודה העומדים לרשות המתכנתים המעוניינים ללמוד ולתרגל את השפה מתיישנים ולא רלוונטיים.
 
-ASMLearn is here to bring to an end the criminal negligence. Our goal is to bring the assembly language into the 21st century by making with the language's task practice into the 21st century. In order to do so, we have developed a platform for students and teachers who want to teach and learn the language. In this system you will find a comfortable workspace environment and a wide range of exercises on a variety of topics the assembly language has to offer.
+ASMLearn כאן כדי להביא לסיום הרשלנות הפלילית. מטרתנו היא להביא את שפת הכינוס למאה ה -21 על ידי ביצוע תרגול המשימה של השפה למאה ה -21. על מנת לעשות זאת פיתחנו פלטפורמה לתלמידים ומורים שרוצים ללמד וללמוד את השפה. במערכת זו תמצאו סביבת עבודה נוחה ומגוון רחב של תרגילים במגוון נושאים שיש לשפת ההרכבה להציע.
 
 # מבנה הפרויקט
 
