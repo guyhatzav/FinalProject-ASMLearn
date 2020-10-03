@@ -6,7 +6,6 @@
    <a href="https://firebase.google.com/docs/web/setup?authuser=0#from-the-cdn/"><img src="https://img.shields.io/badge/Firebase-v7.19.0-blue"></a>
    <a href="https://nodejs.org/en/docs/"><img src="https://img.shields.io/badge/Node.js-8-lightorange"></a>
    <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/ExpressJS-v4.x-lightgrey"></a>
-   
 </p>
 </div>
 
