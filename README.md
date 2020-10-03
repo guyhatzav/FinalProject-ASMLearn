@@ -54,9 +54,11 @@
          <a href="https://nodejs.org/en/" target="_blank">
          <img src="https://cdn.iconscout.com/icon/free/png-256/node-js-1174925.png" width="24"> Node.js
          </a>
-         <a href="https://expressjs.com/" target="_blank">
-         <img src="https://d2eip9sf3oo6c2.cloudfront.net/tags/images/000/000/359/thumb/expressjslogo.png" width="24"> ExpressJS
-         </a>
+    </li>
+    <li>
+        <a href="https://expressjs.com/" target="_blank">
+        <img src="https://d2eip9sf3oo6c2.cloudfront.net/tags/images/000/000/359/thumb/expressjslogo.png" width="24"> ExpressJS
+        </a>
     </li>
   </ul>
   <li>
