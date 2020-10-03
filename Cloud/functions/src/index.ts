@@ -33,7 +33,11 @@ export const createTask = functions.https.onCall((data, context): void => {
     if (auth) {
         const uid = auth.uid;
         //ensures all the crucial params were given and defined.
-        if (typeof data.name === 'undefined' || typeof data.difficulty === 'undefined' || typeof data.subject === 'undefined' || typeof data.description === 'undefined' || typeof data.taskCodeTemplate === 'undefined' || !taskTCsOutputs || !taskTCsInputs) {
+        if (typeof data.name === 'undefined' || 
+            typeof data.difficulty === 'undefined' || 
+            typeof data.subject === 'undefined' || 
+            typeof data.description === 'undefined' || 
+            typeof data.taskCodeTemplate === 'undefined' || !taskTCsOutputs || !taskTCsInputs) {
             console.error(`ERROR: The User (UID: ${uid}) tried to create a task but one or more curcial parameters were missing.`);
             return;
         }
@@ -51,7 +55,9 @@ export const createTask = functions.https.onCall((data, context): void => {
                 if ((taskTCsInputs.length > 0) && (taskTCsInputs[0] !== 'nil')) { definePropertyInObject(sendingObj, "openTCInput", taskTCsInputs[0]); }
                 if (typeof data.inputFormat !== 'undefined' && taskInputFormat.trim() !== '') { definePropertyInObject(sendingObj, "inputFormat", taskInputFormat); }
                 if (typeof data.outputFormat !== 'undefined' && taskOutputFormat.trim() !== '') { definePropertyInObject(sendingObj, "outputFormat", taskOutputFormat); }
-                if (typeof data.notAllowedCommands !== 'undefined' && taskNotAllowedCommands.trim() !== '') { definePropertyInObject(sendingObj, "notAllowedCommands", taskNotAllowedCommands); }
+                if (typeof data.notAllowedCommands !== 'undefined' && taskNotAllowedCommands.trim() !== '') {
+                    definePropertyInObject(sendingObj, "notAllowedCommands", taskNotAllowedCommands); 
+                }
                 //creates the data will be shown/used in the tasks list (in the main dashboard). [saving the informat apart makes the reading process faster]
                 const menuTaskInfoObj = {
                     name: taskName,
@@ -100,7 +106,9 @@ export const createTask = functions.https.onCall((data, context): void => {
                                                 database.ref('tasksPrivateTCs').child(taskID).child('outputs').child(String(key)).set(value).catch(error => { return false; });
                                             });
                                             database.ref('tasks').child(taskID).set(sendingObj).then(() => {
-                                                if (isAdmin && String(authorDataSnapshot.val()) !== uid) { console.info(`The Admin (UID: ${uid}) updated an existing task (TaskID: ${taskID}, Name: ${taskName}).`) }
+                                                if (isAdmin && String(authorDataSnapshot.val()) !== uid) { 
+                                                    console.info(`The Admin (UID: ${uid}) updated an existing task (TaskID: ${taskID}, Name: ${taskName}).`) 
+                                                }
                                                 else { console.info(`The user (UID: ${uid}) updated an existing task (TaskID: ${taskID}, Name: ${taskName}).`) }
                                             }).catch(error => { return false; });
                                         }).catch(error => { return false });
@@ -182,7 +190,8 @@ export const submitTask = functions.https.onCall((data, context): Promise<boolea
                             promises.push(new Promise((resolve, reject) => {
                                 Promise.resolve(String(childSnapshot.key)).then(testcaseID => {
                                     storage.file(`usersSubmissions/${uid}/${taskID}/${testcaseID}.asm`)
-                                        .save(code.replace(dataSnapshot.child('0').val(), dataSnapshot.child(testcaseID).val()), { gzip: true, metadata: { cacheControl: 'no-cache' } /* the contents will change */ })
+                                        .save(code.replace(dataSnapshot.child('0').val(), dataSnapshot.child(testcaseID).val()), { 
+                                        gzip: true, metadata: { cacheControl: 'no-cache' } /* the contents will change */ })
                                         .then(() => { resolve((isFrontendCompiler || onlySave) ? true : (database.ref('usersSubmissions').push({ userID: uid, taskID, testcaseID }).key !== null)) })
                                         .catch(error => { reject(false) });
                                 }).catch(error => { reject(false) })
@@ -271,7 +280,7 @@ but the user ID (UID) not found.`);
             else {
                 if (Number(testcaseID) >= 0 && Number(testcaseID) <= 10) {
                     adminAuth.getUser(userID).then(() => {
-                        if (typeof request.query.eventID !== 'undefined') { database.ref('usersSubmissions').child(String(request.query.eventID)).remove().catch(error => { return false; }) }
+                        if (typeof request.query.eventID !== 'undefined') { database.ref('usersSubmissions').child(String(request.query.eventID)).remove().catch(error => {  return false; })}
                         if (typeof request.query.statusCode !== 'undefined') {
                             /*
                              * 200 - OK
