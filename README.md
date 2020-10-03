@@ -21,8 +21,8 @@
 # מבנה הפרויקט:
 <h5>פרויקט זה מכיל את הממשק האינטרנטי של המערכת, ממשק זה מחולק לשני חלקים:</h5>
 <h5>
-  <li> <b>Client:</b> המורכב מקבצי HTML, CSS ו-JavaScript של כלל דפי האתר.</li>
-  <li> <b>Cloud:</b> המכיל קובץ בשפת TypeScript הרץ בענן בעזרת טכנולוגיית Node.js 8 ו-Express </li>
+  <li> <b><u>Client:</u></b> המורכב מקבצי HTML, CSS ו-JavaScript של כלל דפי האתר.</li>
+  <li> <b><u>Cloud:</u></b> המכיל קובץ בשפת TypeScript הרץ בענן בעזרת טכנולוגיית Node.js 8 ו-Express </li>
 </h5>
 
 # נבנה בעזרת:
