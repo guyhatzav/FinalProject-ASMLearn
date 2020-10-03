@@ -272,19 +272,23 @@ export const getUserData = functions.https.onCall((data, context) => {
     console.error(`ERROR: An unregistered user tried to get user's data`);
     return null;
 });
+//this function is called by the engine when it has to return task's compilation & execution results.
 export const resultFromEngine = functions.https.onRequest((request, response): void => {
+    //this function is called from out of this project, for that reason, the caller must be identified for security purposes.
     if (typeof request.query.token === 'undefined') {
         console.error(`ERROR: The socket ${getRequestSenderIPPort(request)} tried to invoke the action but with no token.`);
         response.status(401).send('You are not allowed to use this action. Do not try again.');
     }
     else {
+         //getting the curcial params
         const token = String(request.query.token);
         if (token === appToken) {
             const taskID = String(request.query.taskID);
             const testcaseID = String(request.query.testcaseID);
             const userID = String(request.query.userID);
             const statusCode = String(request.query.statusCode);
-
+            
+           //ensures all the crucial params were given and defined.
             if (typeof request.query.taskID === 'undefined') {
                 console.error(`ERROR: The socket ${getRequestSenderIPPort(request)} tried to send the results for:
 The user (UID: ${userID}),
@@ -312,9 +316,11 @@ but the user ID (UID) not found.`);
             else {
                 if (Number(testcaseID) >= 0 && Number(testcaseID) <= 10) {
                     adminAuth.getUser(userID).then(() => {
+                        //if there is an eventID as a param, it will delete its request record from database.
                         if (typeof request.query.eventID !== 'undefined') { 
                             database.ref('usersSubmissions').child(String(request.query.eventID)).remove().catch(error => {  return false; })
                         }
+                        //checks for the execution status
                         if (typeof request.query.statusCode !== 'undefined') {
                             /*
                              * 200 - OK
@@ -326,6 +332,7 @@ but the user ID (UID) not found.`);
                              * 451 - Unavailable For Legal Reasons - The program has malicious code.
                              * 508 - Loop Detected - The engine detected an infinte loop in the program.
                              */
+                            //for each status code -> act diffrent.
                             if (statusCode === '200') {
                                 console.info(`The socket ${getRequestSenderIPPort(request)} succeeded to send the results for:
 The user (UID: ${userID}),
@@ -341,6 +348,7 @@ The task (TaskID: ${taskID}),
 The testcase (TestcaseID: ${testcaseID}),
 Status code: ${statusCode}`);
                             }
+                            //getting the task's outputs from database.
                             database.ref('tasksPrivateTCs').child(taskID).child('outputs').child(String(testcaseID)).once('value')
                                 .then(dataSnapshot => {
                                     const expectedOutput = String(dataSnapshot.val());
@@ -348,6 +356,7 @@ Status code: ${statusCode}`);
                                     database.ref('tasks').child(taskID).child('numOfTCs').once('value', numOfTCsSnapshot => {
                                         const numOfTCs = Number(numOfTCsSnapshot.val());
                                         database.ref('usersTasksData').child(userID).child(taskID).child('status').once('value', statusSnapshot => {
+                                            //to 
                                             let status = '';
                                             if (statusSnapshot.exists()) { status = String(statusSnapshot.val()); }
                                             else { for (let i = 0; i < numOfTCs; i++) { status += '0' } }
@@ -471,35 +480,6 @@ but the status code not found.`);
             console.error(`ERROR: The socket ${getRequestSenderIPPort(request)} tried to invoke the action but with incorrect token. (Token: ${token})`);
             response.status(401).send('You are not allowed to use this action. Do not try again.');
         }
-    }
-});
-export const getTaskPrivateInputs = functions.https.onRequest((request, response) => {
-    if (typeof request.query.token === 'undefined') {
-        console.error(`ERROR: The socket ${getRequestSenderIPPort(request)} tried to invoke the action but with no token.`);
-        response.status(401).send('You are not allowed to use this action. Do not try again.');
-        return;
-    }
-    const token = String(request.query.token);
-    if (token === appToken) {
-        if (typeof request.query.taskID === 'undefined') {
-            console.error(`ERROR: The socket ${getRequestSenderIPPort(request)} tried to invoke the action but the task ID was missing.`);
-            response.status(400).send(`We were unable to understand your request, the task's ID was missing.`);
-            return;
-        }
-        const taskID = String(request.query.taskID);
-        database.ref("tasksPrivateTCs").child(taskID).child("inputs").once('value')
-            .then(dataSnapshot => {
-                console.info(`The socket ${getRequestSenderIPPort(request)} succeeded to invoke the action and got the task's input(s). (TaskID: ${taskID})`);
-                response.status(200).send(dataSnapshot.toJSON())
-            })
-            .catch(error => {
-                console.error(`ERROR: The socket ${getRequestSenderIPPort(request)} tried to invoke the action but something went wrong with the database. MORE INFO: ${error}`);
-                response.status(500).send('Something went wrong while processing your request. Please Try Again Later.');
-            });
-    }
-    else {
-        console.error(`ERROR: The socket ${getRequestSenderIPPort(request)} tried to invoke the action but with incorrect token. (Token: ${token})`);
-        response.status(401).send('You are not allowed to use this action. Do not try again.');
     }
 });
 
