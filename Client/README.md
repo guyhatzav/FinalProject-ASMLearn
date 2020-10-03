@@ -5,7 +5,8 @@
   <p align="center">
    <a href="https://firebase.google.com/docs/web/setup?authuser=0#from-the-cdn/"><img src="https://img.shields.io/badge/Firebase-v7.19.0-blue"></a>
    <a href="https://nodejs.org/en/docs/"><img src="https://img.shields.io/badge/HTML-5-yellow"></a>
-   <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/ExpressJS-v4.x-lightgrey"></a>
+   <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/jQuery-v3.5.1-green"></a>
+    <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/Bootstrap-v3.3.4-purple"></a>
 </p>
   <h5> 
     חלק זה של הפרויקט הוא ה-Frontend של המערכת ומשמש ממשק נוח ומעוצב איתו עובדים המשתמשים על מנת לקבל את מבוקשם. צד זה של הפרויקט נכתב בשיטה המכונה בקרב מתכנתי האתרים "Vanilla JavaScript". כלומר, שפת ג'אווה-סקריפט "טהורה", כמעט ללא שימוש בספריות חיצוניות פופולריות או Frameworks.
