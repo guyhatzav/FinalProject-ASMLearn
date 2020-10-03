@@ -200,14 +200,18 @@ export const submitTask = functions.https.onCall((data, context): Promise<boolea
             return Promise.reject(false);
         }
         else {
+            //getting all task's private inputs from database 
             return database.ref("tasksPrivateTCs").child(taskID).child("inputs").once('value').then(dataSnapshot => {  /* TC = Test Case */
                 return database.ref("global").child('isFrontendCompiler').once('value').then(fronCompDS => {
                     const isFrontendCompiler = fronCompDS.exists();
                     return database.ref("usersTasksData").child(uid).child(taskID).remove().then(() => {
+                        //declares the promises list -> all the test cases will be done at parallel.
                         const promises: Promise<boolean>[] = [];
+                        //foreach test-case it will add an async task.
                         dataSnapshot.forEach(childSnapshot => {
                             promises.push(new Promise((resolve, reject) => {
                                 Promise.resolve(String(childSnapshot.key)).then(testcaseID => {
+                                    //creates the asm file in storage after replacing the inputs to each test-case.
                                     storage.file(`usersSubmissions/${uid}/${taskID}/${testcaseID}.asm`)
                                         .save(code.replace(dataSnapshot.child('0').val(), dataSnapshot.child(testcaseID).val()), { 
                                         gzip: true, metadata: { cacheControl: 'no-cache' } /* the contents will change */ })
@@ -219,6 +223,7 @@ export const submitTask = functions.https.onCall((data, context): Promise<boolea
                                 }).catch(error => { reject(false) })
                             }));
                         });
+                        //executes all the requests in parallel.
                         return Promise.all(promises).then(values => {
                             if (onlySave) {
                                 console.info(`The user (UID: ${uid}) saved a task in the database (TaskID: ${taskID}, NumOfTCs: ${values.length}).`);
@@ -239,17 +244,22 @@ export const submitTask = functions.https.onCall((data, context): Promise<boolea
         return Promise.reject(false);
     }
 });
+//getting a spesific user's data (name & image) by his uid.
 export const getUserData = functions.https.onCall((data, context) => {
+    //getting the curcial params
     const requestedUser = String(data.uid), auth = context.auth;
     //checks if the request was sent by an authenticated user.
     if (auth) {
         const uid = auth.uid;
+        //ensures all the crucial params were given and defined.
         if (typeof data.uid === 'undefined') {
             console.error(`ERROR: The User (UID: ${uid}) tried to get details about another user but did not specify his\her UID.`);
             return null;
         }
+        //getting from firebase's admin service all the data and returns it to the client.
         return adminAuth.getUser(requestedUser)
             .then(userRecord => {
+                //leaving a record in the log that someone got someones else info (for security purposes).
                 console.info(`A user (UID: ${uid}) got the data of another user (UID: ${requestedUser}).`);
                 if (userRecord.photoURL) return [userRecord.displayName ? userRecord.displayName : null, userRecord.photoURL];
                 return userRecord.displayName ? userRecord.displayName : null
