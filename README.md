@@ -42,7 +42,7 @@ ASMLearn is here to bring to an end the criminal negligence. Our goal is to brin
   <li>
     <a href="https://reactjs.org/" target="_blank">
       <img style="object-fit: contain" src="https://www.react-israel.co.il/wp-content/uploads/2019/05/React.js_logo-512.png" width="24"> React.js
-    </a><i>(Very few)</i>
+    </a><i>(מעט מאוד)</i>
   </li> 
   
   <li>
