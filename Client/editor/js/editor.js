@@ -1,3 +1,4 @@
+//init firebase
 ﻿const functions = firebase.functions();
 const auth = firebase.auth();
 const database = firebase.database();
@@ -67,6 +68,7 @@ document.getElementById('dropDown').addEventListener('click', e => {
     $('.drop-down').toggleClass('drop-down--active');
 });
 
+//transfers subject name to HTML tag
 function updateSubject(subject) {
     const divDifficlutyBox = document.getElementById('div_taskSubjectBox');
     switch (subject) {
@@ -95,7 +97,7 @@ function updateStatus(status) {
     if (isFirstTime) isFirstTime = false;
     function statusHTML(en, he) { return `<img src="editor/img/${en}.png" class="task-status-icon"/><h2 class='task-subject-item'>${he}</h2>` }
 }
-
+//transfers difficluty index to HTML tag
 function updateDifficulty(difficluty) {
     const divDifficlutyBox = document.getElementById('div_taskDifficultyBox');
     switch (difficluty) {
