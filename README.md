@@ -1,9 +1,9 @@
 <div dir="rtl">
 <p align="center">
   <a href="https://asmlearn.com/"><img src="https://asm-learn.web.app/img/ASMLearnLogoBlack.png" width="200"></a>
+  <a href="https://solanoam.github.io/assembler-submit-engine/"><img src="https://img.shields.io/badge/Engine-Docs-lightgray" width="200"></a>
 </p>
   
-    <a href="https://solanoam.github.io/assembler-submit-engine/"><img align="center" src="https://img.shields.io/badge/Engine-Docs-lightgray"></a>
 
 [![](https://img.shields.io/badge/Firebase-v7.19.0-blue)](https://firebase.google.com/docs/web/setup?authuser=0#from-the-cdn)
 [![](https://img.shields.io/badge/Version-v1.0.0-lightblue)](https://asmlearn.com/)
