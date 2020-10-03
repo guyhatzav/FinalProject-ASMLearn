@@ -49,6 +49,13 @@
       <li><a href="https://quilljs.com/">Quill.js</a></li>
   </ul> 
   <li>TypeScript</li> 
+  <ul>
+    <li>
+         <a href="https://nodejs.org/en/" target="_blank">
+         <img src="https://cdn.iconscout.com/icon/free/png-256/node-js-1174925.png" width="24"> Node.js
+         </a>
+    </li>
+  </ul>
   <li>
     <a href="https://reactjs.org/" target="_blank">
       <img style="object-fit: contain" src="https://www.react-israel.co.il/wp-content/uploads/2019/05/React.js_logo-512.png" width="24"> React.js
