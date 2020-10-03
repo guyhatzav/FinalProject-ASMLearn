@@ -13,7 +13,7 @@ const storage = admin.storage().bucket();
 //private token, without adding this token to the http requests - it won't work.
 const appToken = 'z^mp0a6tPS8hAQZ@RfZg^dvxKOCEw(Pc';
 
-//http request for creating new tasks
+//http request for creating new tasks / updating an existing task.
 export const createTask = functions.https.onCall((data, context): void => {
     //getting from the request the crucial params
     const taskName = String(data.name);
@@ -39,16 +39,20 @@ export const createTask = functions.https.onCall((data, context): void => {
         }
         //checks if the user who sent the request is a verified teacher
         database.ref('users').child(uid).child('teacher').once('value').then(dbData => {
+            //validates that the user marked as verified teacher in the database
             if (dbData.exists()) {
+                //creates the basic object - this object will be stored in the database 
                 const sendingObj = {
                     description: taskDescription,
                     numOfTCs: taskTCsOutputs.length,
                     submitedOn: new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })
                 };
+                //adds optional params to the object (if the teacher added).
                 if ((taskTCsInputs.length > 0) && (taskTCsInputs[0] !== 'nil')) { definePropertyInObject(sendingObj, "openTCInput", taskTCsInputs[0]); }
                 if (typeof data.inputFormat !== 'undefined' && taskInputFormat.trim() !== '') { definePropertyInObject(sendingObj, "inputFormat", taskInputFormat); }
                 if (typeof data.outputFormat !== 'undefined' && taskOutputFormat.trim() !== '') { definePropertyInObject(sendingObj, "outputFormat", taskOutputFormat); }
                 if (typeof data.notAllowedCommands !== 'undefined' && taskNotAllowedCommands.trim() !== '') { definePropertyInObject(sendingObj, "notAllowedCommands", taskNotAllowedCommands); }
+                //creates the data will be shown/used in the tasks list (in the main dashboard). [saving the informat apart makes the reading process faster]
                 const menuTaskInfoObj = {
                     name: taskName,
                     difficulty: taskDifficulty,
@@ -56,8 +60,9 @@ export const createTask = functions.https.onCall((data, context): void => {
                     subject: taskSubject,
                     query: `${taskDifficulty}_${taskSubject}`
                 };
+                //checks if the task isn't already there [there is no task with the same id]. (in this case the user creates a new task).
                 if (typeof data.taskID === 'undefined') {
-                    const newTask = database.ref('tasks').push(sendingObj);
+                    const newTask = database.ref('tasks').push(sendingObj); //pushing the data object to the database. the method returns unique task id.
                     newTask.then(() => {
                         const newTaskKey = newTask.key;
                         if (newTaskKey !== null) {
