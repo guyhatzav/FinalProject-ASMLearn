@@ -78,6 +78,7 @@ export const createTask = functions.https.onCall((data, context): void => {
                     newTask.then(() => {
                         const newTaskKey = newTask.key;
                         if (newTaskKey !== null) {
+                            //creates the template asm file in storage.
                             storage.file(`tasksCodeTemplates/${newTaskKey}.asm`)
                                 .save(taskCodeTemplate, { gzip: true, metadata: { cacheControl: 'no-cache' } /* the contents will change */ }).then(() => {
                                     database.ref('menuTasksInfo').child(newTaskKey).set(menuTaskInfoObj).catch(error => { return false; });
@@ -89,12 +90,15 @@ export const createTask = functions.https.onCall((data, context): void => {
                                     });
                                 }).catch(error => { return false });
                         }
+                        //increases the number of tasks by 1.
                         database.ref('global').child('numOfTasks').once('value').then(numOfTasksData => {
                             database.ref('global').child('numOfTasks').set(Number(numOfTasksData.val()) + 1).catch(error => { return false; });
                             console.info(`The user (UID: ${uid} ) created a new task (TaskID: ${newTaskKey}, Name: ${taskName}).`);
                         }).catch(error => { return false; });
                     }).catch(error => { return false; });
                 }
+                //if the user isn't the teacher who created the task, it will check if the user is an admin. admins have premissions to update any task.
+                //if the user is an admin, same process will happend (as above).
                 else {
                     database.ref('users').child(uid).child('admin').once('value')
                         .then(dbAdmin => {
@@ -123,7 +127,6 @@ export const createTask = functions.https.onCall((data, context): void => {
                             }).catch(error => { return false });
                         })
                         .catch(error => { return false; });
-
                 }
             }
             else { console.error(`ERROR: The User (UID: ${uid}) tried to create a task even though he isn't a teacher.`) }
@@ -131,20 +134,27 @@ export const createTask = functions.https.onCall((data, context): void => {
     }
     else { console.error('ERROR: An unregistered user tried to submit a task.') }
 });
+//the function deletes an existing task.
 export const removeTask = functions.https.onCall((data, context): Promise<boolean> => {
+    //getting the curcial params
     const taskID = String(data.taskID);
     const auth = context.auth;
+    //checks if the request was sent by an authenticated user.
     if (auth) {
         const uid = auth.uid;
+         //ensures all the crucial params were given and defined.
         if (typeof data.taskID === 'undefined') {
             console.error(`ERROR: The User (UID: ${uid}) tried to delete a task but didn't specify TaskID.`);
             return Promise.reject(false);
         }
+        //getting from database if the user is an admin.
         return database.ref('users').child(uid).child('admin').once('value').then(adminSnap => {
             return database.ref('menuTasksInfo').child(taskID).child('author').once('value').then(datasnapshot => {
                 if (datasnapshot.exists()) {
                     const authorUID = String(datasnapshot.val());
+                    //checks if the requester is either an admin or the author.
                     if ((uid === authorUID) || adminSnap.exists()) {
+                        //removes from all the paths where there are task's records.
                         return database.ref('menuTasksInfo').child(taskID).remove().then(() => {
                             return database.ref('tasks').child(taskID).remove().then(() => {
                                 return database.ref('tasksPrivateTCs').child(taskID).remove().then(() => {
@@ -176,12 +186,15 @@ export const removeTask = functions.https.onCall((data, context): Promise<boolea
     }
 });
 export const submitTask = functions.https.onCall((data, context): Promise<boolean> => {
+    //getting the curcial params
     const taskID = String(data.taskID);
     const code = String(data.code);
     const onlySave = (typeof data.onlySave === 'undefined') ? false : Boolean(data.onlySave);
     const auth = context.auth;
+    //checks if the request was sent by an authenticated user.
     if (auth) {
         const uid = auth.uid;
+        //ensures all the crucial params were given and defined.
         if (typeof data.taskID === 'undefined' || typeof data.code === 'undefined') {
             console.error(`ERROR: The User (UID: ${uid}) tried to submit a task but one or more curcial parameters were missing.`);
             return Promise.reject(false);
@@ -228,7 +241,7 @@ export const submitTask = functions.https.onCall((data, context): Promise<boolea
 });
 export const getUserData = functions.https.onCall((data, context) => {
     const requestedUser = String(data.uid), auth = context.auth;
-    
+    //checks if the request was sent by an authenticated user.
     if (auth) {
         const uid = auth.uid;
         if (typeof data.uid === 'undefined') {
