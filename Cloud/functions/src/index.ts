@@ -2,16 +2,20 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
 admin.initializeApp({
-    credential: admin.credential.cert(require("../key/admin.json")),
+    credential: admin.credential.cert(require("../key/admin.json")),   //developer private API key file
     databaseURL: "https://asm-learn.firebaseio.com",
     storageBucket: "asm-learn.appspot.com"
 });
 const adminAuth = admin.auth();
 const database = admin.database();
 const storage = admin.storage().bucket();
+
+//private token, without adding this token to the http requests - it won't work.
 const appToken = 'z^mp0a6tPS8hAQZ@RfZg^dvxKOCEw(Pc';
 
+//http request for creating new tasks
 export const createTask = functions.https.onCall((data, context): void => {
+    //getting from the request the crucial params
     const taskName = String(data.name);
     const taskDifficulty = Number(data.difficulty);
     const taskSubject = String(data.subject);
@@ -24,12 +28,16 @@ export const createTask = functions.https.onCall((data, context): void => {
     const taskTCsInputs = data.testCasesInputs as string[];
     const taskTCsOutputs = data.testCasesOutputs as string[];
     const auth = context.auth;
+    
+    //checks if the request was sent by an authenticated user.
     if (auth) {
         const uid = auth.uid;
+        //ensures all the crucial params were given and defined.
         if (typeof data.name === 'undefined' || typeof data.difficulty === 'undefined' || typeof data.subject === 'undefined' || typeof data.description === 'undefined' || typeof data.taskCodeTemplate === 'undefined' || !taskTCsOutputs || !taskTCsInputs) {
             console.error(`ERROR: The User (UID: ${uid}) tried to create a task but one or more curcial parameters were missing.`);
             return;
         }
+        //checks if the user who sent the request is a verified teacher
         database.ref('users').child(uid).child('teacher').once('value').then(dbData => {
             if (dbData.exists()) {
                 const sendingObj = {
