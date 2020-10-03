@@ -52,9 +52,15 @@ export const createTask = functions.https.onCall((data, context): void => {
                     submitedOn: new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })
                 };
                 //adds optional params to the object (if the teacher added).
-                if ((taskTCsInputs.length > 0) && (taskTCsInputs[0] !== 'nil')) { definePropertyInObject(sendingObj, "openTCInput", taskTCsInputs[0]); }
-                if (typeof data.inputFormat !== 'undefined' && taskInputFormat.trim() !== '') { definePropertyInObject(sendingObj, "inputFormat", taskInputFormat); }
-                if (typeof data.outputFormat !== 'undefined' && taskOutputFormat.trim() !== '') { definePropertyInObject(sendingObj, "outputFormat", taskOutputFormat); }
+                if ((taskTCsInputs.length > 0) && (taskTCsInputs[0] !== 'nil')) { 
+                    definePropertyInObject(sendingObj, "openTCInput", taskTCsInputs[0]); 
+                }
+                if (typeof data.inputFormat !== 'undefined' && taskInputFormat.trim() !== '') { 
+                    definePropertyInObject(sendingObj, "inputFormat", taskInputFormat); 
+                }
+                if (typeof data.outputFormat !== 'undefined' && taskOutputFormat.trim() !== '') { 
+                    definePropertyInObject(sendingObj, "outputFormat", taskOutputFormat); 
+                }
                 if (typeof data.notAllowedCommands !== 'undefined' && taskNotAllowedCommands.trim() !== '') {
                     definePropertyInObject(sendingObj, "notAllowedCommands", taskNotAllowedCommands); 
                 }
@@ -192,7 +198,10 @@ export const submitTask = functions.https.onCall((data, context): Promise<boolea
                                     storage.file(`usersSubmissions/${uid}/${taskID}/${testcaseID}.asm`)
                                         .save(code.replace(dataSnapshot.child('0').val(), dataSnapshot.child(testcaseID).val()), { 
                                         gzip: true, metadata: { cacheControl: 'no-cache' } /* the contents will change */ })
-                                        .then(() => { resolve((isFrontendCompiler || onlySave) ? true : (database.ref('usersSubmissions').push({ userID: uid, taskID, testcaseID }).key !== null)) })
+                                        .then(() => { 
+                                        resolve((isFrontendCompiler || onlySave) ? true : (database.ref('usersSubmissions').push({ 
+                                            userID: uid, taskID, testcaseID 
+                                        }).key !== null)) })
                                         .catch(error => { reject(false) });
                                 }).catch(error => { reject(false) })
                             }));
@@ -280,7 +289,9 @@ but the user ID (UID) not found.`);
             else {
                 if (Number(testcaseID) >= 0 && Number(testcaseID) <= 10) {
                     adminAuth.getUser(userID).then(() => {
-                        if (typeof request.query.eventID !== 'undefined') { database.ref('usersSubmissions').child(String(request.query.eventID)).remove().catch(error => {  return false; })}
+                        if (typeof request.query.eventID !== 'undefined') { 
+                            database.ref('usersSubmissions').child(String(request.query.eventID)).remove().catch(error => {  return false; })
+                        }
                         if (typeof request.query.statusCode !== 'undefined') {
                             /*
                              * 200 - OK
@@ -321,11 +332,13 @@ Status code: ${statusCode}`);
                                                 const yourOutput = String(request.query.output);
                                                 if (yourOutput === expectedOutput || yourOutput === `${expectedOutput}\n`) {
                                                     status = setCharAt(status, Number(testcaseID), '1');
-                                                    usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, yourOutput, result: 'correct' } : { result: 'correct' }).catch(error => { return false }); 
+                                                    usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, yourOutput, result: 'correct' } : { result: 'correct' })
+                                                        .catch(error => { return false }); 
                                                 }
                                                 else {
                                                     status = setCharAt(status, Number(testcaseID), '0');
-                                                    usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, yourOutput, result: 'wrong' } : { result: 'wrong' }).catch(error => { return false }); 
+                                                    usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, yourOutput, result: 'wrong' } : { result: 'wrong' })
+                                                        .catch(error => { return false }); 
                                                 }
                                                 database.ref('usersTasksData').child(userID).child(taskID).child('status').set(status).catch(error => { return false });
                                                 if (!status.includes("0")) {
@@ -337,17 +350,28 @@ Status code: ${statusCode}`);
                                                     database.ref('users').child(userID).child('tasksSolvedList').child(taskID).remove().catch(error => { return false });
                                                 }
                                             }
-                                            else if (statusCode === '408' || statusCode === '417' || statusCode === '420' || statusCode === '429' || statusCode === '451' || statusCode === '508') {
+                                            else if (statusCode === '408' || 
+                                                     statusCode === '417' || 
+                                                     statusCode === '420' || 
+                                                     statusCode === '429' || 
+                                                     statusCode === '451' || 
+                                                     statusCode === '508') {
                                                 function updateResultWithError(result: string): void {
                                                     const errorMessage = String(request.query.errorMessage);
                                                     if (testcaseID === '0') {
-                                                        usersTasksDataPath.set((typeof request.query.errorMessage !== 'undefined') ? { expectedOutput, result, errorMessage } : { expectedOutput, result }).catch(error => { return false }) 
+                                                        usersTasksDataPath.set((typeof request.query.errorMessage !== 'undefined') ?
+                                                                               { expectedOutput, result, errorMessage } : 
+                                                                               { expectedOutput, result }).catch(error => { return false }) 
                                                     }
-                                                    else { usersTasksDataPath.set((typeof request.query.errorMessage !== 'undefined') ? { result, errorMessage } : { result }).catch(error => { return false }) }
+                                                    else { usersTasksDataPath.set((typeof request.query.errorMessage !== 'undefined') ?
+                                                                                  { result, errorMessage } : 
+                                                                                  { result }).catch(error => { return false }) }
                                                 }
                                                 switch (statusCode) {
                                                     // #region Status Code 408
-                                                    case '408': usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, result: 'timeout' } : { result: 'timeout' }).catch(error => { return false; });
+                                                    case '408': usersTasksDataPath.set((testcaseID === '0') ? 
+                                                                                       { expectedOutput, result: 'timeout' } : 
+                                                                                       { result: 'timeout' }).catch(error => { return false; });
                                                         break;
                                                     // #endregion
 
@@ -360,17 +384,24 @@ Status code: ${statusCode}`);
                                                     // #endregion
 
                                                     // #region Status Code 429
-                                                    case '429': usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, result: 'overload' } : { result: 'overload' }).catch(error => { return false; });
+                                                    case '429': usersTasksDataPath.set((testcaseID === '0') ? 
+                                                                                       { expectedOutput, result: 'overload' } :
+                                                                                       { result: 'overload' })
+                                                        .catch(error => { return false; });
                                                         break;
                                                     // #endregion
 
                                                     // #region Status Code 451
-                                                    case '451': usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, result: 'malicious code' } : { result: 'malicious code' }).catch(error => { return false; });
+                                                    case '451': usersTasksDataPath.set((testcaseID === '0') ? 
+                                                                                       { expectedOutput, result: 'malicious code' } : 
+                                                                                       { result: 'malicious code' }).catch(error => { return false; });
                                                         break;
                                                     // #endregion
 
                                                     // #region Status Code 508
-                                                    case '508': usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, result: 'infinite loop' } : { result: 'infinite loop' }).catch(error => { return false; });
+                                                    case '508': usersTasksDataPath.set((testcaseID === '0') ? 
+                                                                                       { expectedOutput, result: 'infinite loop' } : 
+                                                                                       { result: 'infinite loop' }).catch(error => { return false; });
                                                         break;
                                                     // #endregion
                                                 }
