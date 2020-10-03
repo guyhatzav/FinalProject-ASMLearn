@@ -185,6 +185,7 @@ export const removeTask = functions.https.onCall((data, context): Promise<boolea
         return Promise.reject(false);
     }
 });
+//the functions gets the asm code from the user and passes it to engine.
 export const submitTask = functions.https.onCall((data, context): Promise<boolean> => {
     //getting the curcial params
     const taskID = String(data.taskID);
@@ -356,23 +357,27 @@ Status code: ${statusCode}`);
                                     database.ref('tasks').child(taskID).child('numOfTCs').once('value', numOfTCsSnapshot => {
                                         const numOfTCs = Number(numOfTCsSnapshot.val());
                                         database.ref('usersTasksData').child(userID).child(taskID).child('status').once('value', statusSnapshot => {
-                                            //to 
+                                            //creates a task-status => to know how many test-cases of a spesific task are correct. 
                                             let status = '';
                                             if (statusSnapshot.exists()) { status = String(statusSnapshot.val()); }
                                             else { for (let i = 0; i < numOfTCs; i++) { status += '0' } }
                                             if (statusCode === '200') {
                                                 const yourOutput = String(request.query.output);
+                                                //compares the result from the engine & database.
                                                 if (yourOutput === expectedOutput || yourOutput === `${expectedOutput}\n`) {
+                                                    //if there is a match => return 'correct', update the status of this test-case to '1' in the database
                                                     status = setCharAt(status, Number(testcaseID), '1');
                                                     usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, yourOutput, result: 'correct' } : { result: 'correct' })
                                                         .catch(error => { return false }); 
                                                 }
                                                 else {
+                                                    //if there isn't a match => return 'wrong', update the status of this test-case to '0' in the database
                                                     status = setCharAt(status, Number(testcaseID), '0');
                                                     usersTasksDataPath.set((testcaseID === '0') ? { expectedOutput, yourOutput, result: 'wrong' } : { result: 'wrong' })
                                                         .catch(error => { return false }); 
                                                 }
                                                 database.ref('usersTasksData').child(userID).child(taskID).child('status').set(status).catch(error => { return false });
+                                               //updates the personal task tracking system about the status of this task.
                                                 if (!status.includes("0")) {
                                                     database.ref('users').child(userID).child('tasksSolvedList').child(taskID).set("true").catch(error => { return false });
                                                     database.ref('users').child(userID).child('tasksPartiallySolvedList').child(taskID).remove().catch(error => { return false });
@@ -382,6 +387,7 @@ Status code: ${statusCode}`);
                                                     database.ref('users').child(userID).child('tasksSolvedList').child(taskID).remove().catch(error => { return false });
                                                 }
                                             }
+                                            //handling errors and issues. (the task wasn't compiled and ran successfully).
                                             else if (statusCode === '408' || 
                                                      statusCode === '417' || 
                                                      statusCode === '420' || 
@@ -483,6 +489,7 @@ but the status code not found.`);
     }
 });
 
+//editing a specific char in a string (example: 'abc'[1]='d' => 'adc')
 function setCharAt(str: string, index: number, chr: string): string {
     return (index > str.length - 1) ? str : `${str.substr(0, index)}${chr}${str.substr(index + 1)}`;
 }
