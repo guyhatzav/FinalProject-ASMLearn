@@ -7,5 +7,8 @@
    <a href="https://nodejs.org/en/docs/"><img src="https://img.shields.io/badge/Node.js-8-lightorange"></a>
    <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/ExpressJS-v4.x-lightgrey"></a>
 </p>
+ <h5>
+   חלק זה של הפרויקט הוא ה-Backend של המערכת ומשמש לניהול המערכת בכלל, ובפרט ניהול המשתמשים והמלטלות.
+ </h5>
 </div>
 
