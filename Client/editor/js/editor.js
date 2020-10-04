@@ -6,6 +6,7 @@ const storage = firebase.storage();
 
 const noProfileImageURL = "dashboard/img/noImage.jpg";
 
+//get all the data about the task from local storage.
 var decipherData = null;
 try { decipherData = String(decipher('fJx1ikJRS9lf4AIJdg1A')(new URLSearchParams(window.location.search).get('task'))) }
 catch { window.location = 'dashboard.html' }
@@ -18,6 +19,7 @@ document.getElementById('img_taskAuthorImage').src = (authorImage !== 'null') ? 
 updateDifficulty(Number(localStorage.getItem('taskDifficulty')));
 updateSubject(localStorage.getItem('taskSubject'));
 
+//variables.
 var editorFontSize = 15;
 var taskDescription;
 var tasksTags = '', inputFormat = '', outputFormat = '';
@@ -27,6 +29,7 @@ var isFrontendCompiler = false;
 
 var numOfTCs, initCode, initCodeForEdit;
 
+//inits the code editor with ace api.
 const editor = ace.edit("editor");
 editor.setTheme("ace/theme/ambiance");
 editor.session.setMode("ace/mode/assembly_x86");
@@ -36,27 +39,32 @@ editor.setOption("enableBasicAutocompletion", true);
 editor.focus();
 editor.session.getUndoManager().reset();
 
-
 editor.addEventListener('click', e => { $('.drop-down').removeClass('drop-down--active') });
 
+//settings the fron down click event button.
 document.getElementById('btn_fontdown').addEventListener('click', e => {
     editorFontSize--;
     editor.setFontSize(editorFontSize);
     database.ref('users').child(auth.currentUser.uid).child('fontSize').set(editorFontSize);
 });
+//settings the fron up click event button.
 document.getElementById('btn_fontup').addEventListener('click', e => {
     editorFontSize++;
     editor.setFontSize(editorFontSize);
     database.ref('users').child(auth.currentUser.uid).child('fontSize').set(editorFontSize);
 });
+//settings the editor undo click event button.
 document.getElementById('btn_undo').addEventListener('click', e => { editor.undo() });
+//settings the editor redo click event button.
 document.getElementById('btn_redo').addEventListener('click', e => { editor.redo() });
+//settings the editor reset to default click event button.
 document.getElementById('btn_reset').addEventListener('click', e => {
     editor.setValue(initCode);
     editor.focus();
     editor.gotoLine(editor.getSelectionRange().end.row - 3, 1, true);
 });
 
+//inits the editor themes in the list (in the HTML)
 ['twilight', 'sqlserver', 'chaos', 'clouds', 'ambiance', 'tomorrow_night_blue', 'xcode'].forEach(item => {
     document.getElementById(`li_${item}_theme`).addEventListener('click', e => {
         editor.setTheme(`ace/theme/${item}`);
@@ -82,6 +90,7 @@ function updateSubject(subject) {
     function getSubjectItemCode(text, dotColor) { return `<div class='task-subject-color-dot' style='background-color: ${dotColor};'></div><h2 class='task-subject-item'>${text}</h2>` }
 }
 var isFirstTime = true;
+//transfers status to HTML tag
 function updateStatus(status) {
     const divStatusBox = document.getElementById('div_taskStatusBox');
     switch (status) {
@@ -126,8 +135,10 @@ document.getElementById('btn_edittask').addEventListener('click', e => {
     }
 });
 auth.onAuthStateChanged(user => {
+    //checks if the user logged in
     if (user) {
         if (taskID !== localStorage.getItem("taskID")) {
+            //loads the tasks data from local storage and cloud.
             database.ref('menuTasksInfo').child(taskID).once('value', snapshot => {
                 document.getElementById('div_taskNameBox').innerHTML = snapshot.val().name;
                 localStorage.setItem('taskName', snapshot.val().name);
@@ -172,6 +183,7 @@ auth.onAuthStateChanged(user => {
         database.ref('tasks').child(taskID).once('value', snapshot => {
             numOfTCs = Number(snapshot.val().numOfTCs);
             const submissionsResultsForm = document.getElementById('submissionsResultsForm');
+            //create the test cases result boxes
             for (var i = 1; i < numOfTCs; i++) {
                 submissionsResultsForm.appendChild(createElement('img', 'test-case-title-icon', 'editor/img/test.png'));
                 submissionsResultsForm.appendChild(createElement('h3', 'test-case-title-text', `מקרה בדיקה ${i + 1}`));
@@ -186,6 +198,7 @@ auth.onAuthStateChanged(user => {
                 submissionsResultsForm.appendChild(divStatus);
                 submissionsResultsForm.appendChild(createElement('hr'));
             }
+            //checks for optional params if they exists and updates the data on page.
             if (snapshot.child('notAllowedCommands').exists()) {
                 tasksTags = String(snapshot.val().notAllowedCommands);
                 ReactDOM.render(React.createElement(Tags, { tags: tasksTags }), document.getElementById("notAllowedCommands"));
@@ -208,12 +221,15 @@ auth.onAuthStateChanged(user => {
 
             if (snapshot.child('openTCInput').exists()) { openTCInput = String(snapshot.val().openTCInput) }
             
+            //define the listtener in the cloud in case the engine return the results.
             database.ref('usersTasksData').child(user.uid).child(taskID).on('value', snapshot => {
+                //checks if the data added or removed.
                 if (snapshot.exists()) {
                     isEverRan = true;
                     snapshot.child('status').exists() ? (String(snapshot.val().status).includes('0') ? updateStatus(2) : updateStatus(1)) : updateStatus(3)
                     snapshot.child('testcases').forEach(childSnapshot => {
                         const result = String(childSnapshot.val().result);
+                        //updates the HTML according to the engines status
                         const key = String(childSnapshot.key);
                         switch (result) {
                             case 'correct': updateTestCaseState(key, "התשובה נכונה", "editor/img/v.png", "rgba(5, 199, 5, 0.5)"); break;
@@ -224,6 +240,7 @@ auth.onAuthStateChanged(user => {
                             case 'runtime error': updateTestCaseState(key, "קרתה שגיאה בעת הרצת התוכנית", "editor/img/error.png", "rgba(255, 194, 102, 0.5)"); break;
                             case 'malicious code': updateTestCaseState(key, "התוכנית הכילה קוד שזוהה כזדוני ולכן הופסקה", "editor/img/evil.png", "rgba(255, 179, 209, 0.5)"); break;
                         }
+                        //the first test case is an open one => handles the expected output on page.
                         if (key == 0) {
                             document.getElementById('pTestCase-expectedOutput').innerHTML = String(childSnapshot.val().expectedOutput);
                             if (result === 'correct' || result === 'wrong') {
@@ -240,9 +257,10 @@ auth.onAuthStateChanged(user => {
                         }
                     });
                 }
+                //if removed update the status to: not solved.
                 else { updateStatus(3) }
             });
-
+            //inits the quill text boxes.
             const taskDescriptionEditor = new Quill('#div_taskDescription', { theme: 'snow', modules: { toolbar: false } });
             taskDescriptionEditor.enable(false);
             taskDescription = String(snapshot.val().description);
@@ -260,6 +278,7 @@ function updateTestCaseState(key, innerHTML, src, backgroundColor) {
     document.getElementById(`divTestCase-${key}-status`).style.backgroundColor = backgroundColor;
 }
 
+//getting the task's code template to show to the user at load - success
 function onInitCodeEditorResolve(url) {
     jQuery.get(url, data => {
         editor.setValue(String(data));
@@ -274,6 +293,8 @@ function onInitCodeEditorResolve(url) {
         document.getElementById('editor-full-container').style.display = 'block';
     });
 }
+
+//getting the task's code template to show to the user at load - failed
 function onInitCodeEditorReject() {
     storage.ref(`tasksCodeTemplates/${taskID}.asm`).getDownloadURL().then(url => {
         jQuery.get(url, data => {
@@ -288,6 +309,7 @@ function onInitCodeEditorReject() {
     }).catch(error => { console.error(error) });
 }
 
+//HELPER FUNCTION - creates an HTML element with the given params.
 function createElement(type, classAtt = null, text = null, id = null) {
     const item = document.createElement(type);
     if (classAtt !== null) { item.setAttribute("class", classAtt) }
@@ -296,12 +318,15 @@ function createElement(type, classAtt = null, text = null, id = null) {
     if (id !== null) { item.setAttribute("id", id) }
     return item;
 }
+//submits the task to the engine.
 const btn_submitTask = document.getElementById('submit_button');
 btn_submitTask.addEventListener('click', e => {
+    //updates the HTML
     btn_submitTask.classList.add("onclic");
     document.getElementById('pTestCase-yourOutput').innerHTML = '...התוצאה שלך תופיע כאן בסיום ההרצה'
     document.getElementById('pTestCase-expectedOutput').innerHTML = '...התוצאה המצופה תופיע כאן בסיום ההרצה'
     for (var i = 0; i < numOfTCs; i++) { updateTestCaseState(i, "...מחשב את מקרה הבדיקה", "editor/img/loading.gif", "rgba(153, 153, 153, 0.5)") }
+    //sends the code to the engine using HTTP Request
     const submitTaskPromise = (functions.httpsCallable('submitTask'))({
         taskID: taskID,
         code: String(editor.getValue())
@@ -318,16 +343,8 @@ btn_submitTask.addEventListener('click', e => {
         setTimeout(() => { btn_submitTask.classList.remove("validate") }, 1500);
         openModal();
     });
-    if (isFrontendCompiler) {
-        axios.post('https://eu-gb.functions.cloud.ibm.com/api/v1/web/guy%40hatzav.com_dev/ASMLearn/submitCodeToEngine', {
-            taskID: taskID,
-            code: editor.getValue(),
-            userID: auth.currentUser.uid
-        })
-            .then(response => { })
-            .catch(error => { });
-    }
 });
+//inits the SAVE button (calls the submitTask cloud function with onlySave param)
 const btn_saveTask = document.getElementById('save_button');
 btn_saveTask.addEventListener('click', e => {
     btn_saveTask.classList.add("onclic");
