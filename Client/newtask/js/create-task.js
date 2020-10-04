@@ -1,7 +1,9 @@
-﻿const auth = firebase.auth();
+﻿//inits firebase
+const auth = firebase.auth();
 const functions = firebase.functions();
 const database = firebase.database();
 
+//getting the elements form the HTML Page
 const btnAddTestcase = document.getElementById('btn_AddTestcase');
 const btnBack = document.getElementById('btn_back');
 const btnAddDraft = document.getElementById('btn_addDraft');
@@ -25,11 +27,14 @@ const isTeacher = (localStorage.getItem("isTeacher") === 'true');
 var editorFontSize = 15;
 alertify.set({ delay: 3000 });
 
+//variables
 var loggedin = false;
 var tasksDrafts = [];
 var numOfTestcases = 1;
 var testCasesID = 1;
 var testCasesIdsList = [0];
+
+//inits all the aces editors
 const openTestCaseInputEditor = ace.edit("input-code-editor-0");
 openTestCaseInputEditor.setTheme("ace/theme/twilight");
 openTestCaseInputEditor.session.setMode("ace/mode/assembly_x86");
@@ -83,6 +88,7 @@ document.getElementById('btn_fontup').addEventListener('click', e => {
 document.getElementById('btn_undo').addEventListener('click', e => { templateCodeEditor.undo() });
 document.getElementById('btn_redo').addEventListener('click', e => { templateCodeEditor.redo() });
 
+//inits the quill toolbar
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'font': [] }],
@@ -142,6 +148,7 @@ function addTooltipToToolbatItem(className, text, value = null, flow = "up") {
     });
 }
 
+//if the user tries to update a task -> getting task data from local storage 
 const param = new URLSearchParams(window.location.search).get('task');
 const editingTaskID = param !== null ? String(decipher('fJx1ikJRS9lf4AIJdg1A')(param)) : null;
 const editingTaskDescription = localStorage.getItem('taskDescription');
@@ -171,8 +178,10 @@ if (editingTaskID !== null) {
 }
 else { document.getElementById('btn_toTask').remove() }
 
+//if the user is not a teacher he doesnt have the permission to be in this page
 if (!isTeacher) { window.location = 'dashboard.html' }
 
+//adding draft to list
 btnAddDraft.addEventListener('click', e => {
     if (String(txbTaskName.value).trim() !== "") {
         if (checkIfEditorValid(editor)) {
@@ -182,10 +191,11 @@ btnAddDraft.addEventListener('click', e => {
     }
     else { alertify.error('⚠️ לא הוזן שם למטלה') }
 });
-
+//inits the page (the loading will stop when this function complete)
 auth.onAuthStateChanged(user => {
     if (user) {
         loggedin = true;
+        //checks if the user updates an existing task or create new one.
         if (editingTaskID !== null) {
             database.ref('tasksPrivateTCs').child(editingTaskID).once('value')
                 .then(snapshot => {
@@ -277,6 +287,7 @@ auth.onAuthStateChanged(user => {
     }
     else { window.location = 'index.html' }
 });
+//getting user's drafts from cloud
 function getDraftlistFromCloud() {
     database.ref('tasksDrafts').child(auth.currentUser.uid).once('value').then(snapshot => {
         snapshot.forEach(listItem => { new Draft(listItem) });
@@ -284,6 +295,7 @@ function getDraftlistFromCloud() {
         document.getElementById('newtask-full-container').classList.remove('hided');
     });
 }
+//HELPER FUNCTION - creates an HTML element with the given params.
 function createElement(type, classAtt = null, text = null, id = null)
 {
     const item = document.createElement(type);
@@ -301,13 +313,13 @@ function createElement(type, classAtt = null, text = null, id = null)
     }
     return item;
 }
-
+//submits a task to the cloud (or updates an existing task).
 btnSubmit.addEventListener('click', e => {
     if (loggedin) {
         if (String(txbTaskName.value).trim() !== "") {
             if (checkIfEditorValid(editor)) {
                 btnSubmit.classList.add('onclic');
-                validate();
+                validate(); //here is the main submiting logic
             }
             else { alertify.error('⚠️ לא הוזן תיאור למטלה') }
         }
@@ -316,6 +328,7 @@ btnSubmit.addEventListener('click', e => {
     else { alertify.error('⚠️ על מנת להעלות מטלה חובה להתחבר ולהיות מורה מאומת/ת') }
 });
 
+//transfers checkbox check to difficulty varible (number)
 function getDifficulty() {
     if (rbEasy.checked) {
         return 1;
@@ -328,6 +341,7 @@ function getDifficulty() {
     } 
     return -1;
 }
+//transfers difficulty varible (number) to checkbox check 
 function setDifficulty(value) {
     switch (value) {
         case 1: rbEasy.checked = true; break;
@@ -335,7 +349,7 @@ function setDifficulty(value) {
         case 3: rbHard.checked = true; break;
     }
 }
-
+//transfers checkbox check to subject varible (string)
 function getSubject() {
     if (rbMovArray.checked) {
         return "movarray";
@@ -357,6 +371,7 @@ function getSubject() {
     }
     return null;
 }
+//transfers subject varible (string) to checkbox check 
 function setSubject(name) {
     switch (name) {
         case 'movarray': rbMovArray.checked = true; break;
@@ -367,6 +382,7 @@ function setSubject(name) {
         case 'interrupts': rbInterrupts.checked = true; break;
     }
 }
+//getting all the crucial data from the page, wrapping it into an object and sends to cloud
 function validate() {
     var inputs = [];
     var outputs = [];
@@ -382,6 +398,7 @@ function validate() {
         notAllowedCommands += (`${tags[i].innerHTML.trim()} `);
     }
     const submitTaskPromise = functions.httpsCallable('createTask');
+    //creates the object that will be stored in cloud.
     const sendingObj = {
         name: txbTaskName.value,
         difficulty: getDifficulty(),
@@ -391,6 +408,7 @@ function validate() {
         testCasesInputs: inputs,
         testCasesOutputs: outputs
     };
+    //adding to the object optional params.
     if (editingTaskID !== null) { sendingObj.taskID = editingTaskID  }
     if (checkIfEditorValid(inputFormatEditor)) {
         sendingObj.inputFormat = inputFormatEditor.root.innerHTML;
@@ -411,6 +429,7 @@ function checkIfEditorValid(editor) { return String(editor.root.textContent).tri
 
 btnAddTestcase.addEventListener('click', e => { if (numOfTestcases < 10) { addTestCase() } });
 
+//adding a test case tab to the HTML
 function addTestCase() {
     const tab = createElement('li', 'testCasesTabBlock-tab', '(מקרה בדיקה (חסוי', `testcaseTab${String(testCasesID)}`),
         pane = createElement('div', 'testCasesTabBlock-pane', null, `testcasePane${String(testCasesID)}`);
@@ -455,8 +474,11 @@ function addTestCase() {
     testCasesID++;
 }
 
+//draft data structure
 class Draft {
+    //if snapshot exsits -> getting the draft data from cloud.
     constructor(datasnapshot = null) {
+        //getting the draft data from page
         if (datasnapshot === null) {
             btnAddDraft.classList.remove('onclic');
             btnAddDraft.classList.add('validate');
@@ -486,6 +508,7 @@ class Draft {
             dbItem.set(this).then(() => { setTimeout(() => { btnAddDraft.classList.remove('validate'); }, 1250); });
             this.dbKey = String(dbItem.key);
         }
+        //getting the draft data from cloud
         else {
             this.name = datasnapshot.val().name;
             this.difficulty = datasnapshot.val().difficulty;
@@ -508,7 +531,7 @@ class Draft {
         tasksDrafts.push(this);
         document.getElementById('taskslist_container').appendChild(document.createElement('draftlist-item'));
     }
-
+    //restoring the draft back to the fields in the HTML page.
     setDraftToPage() {
         txbTaskName.value = this.name;
         setDifficulty(this.difficulty);
