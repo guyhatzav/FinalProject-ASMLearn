@@ -38,6 +38,7 @@ var TasksLeft = 0;
 var TasksPartiallySolved = 0;
 var TasksAllWrong = 0;
 
+//keeps all the data about the authors (instead of reading the same author's data from cloud multiple times)
 var knownAuthors = new Map();
 
 var tasksSolvedList = [];
@@ -64,7 +65,8 @@ function getQueries() {
     const isEasyChecked = Boolean(cb_easy.checked);
     const isMediumChecked = Boolean(cb_medium.checked);
     const isHardChecked = Boolean(cb_hard.checked);
-
+    
+    //transfers checkboxes checks to boolean vars
     const isMovArrayChecked = Boolean(document.getElementById('cb_category_movarray').checked);
     const isAritLogicChecked = Boolean(document.getElementById('cb_category_aritlogic').checked);
     const isLoopIfChecked = Boolean(document.getElementById('cb_category_loopif').checked);
@@ -72,13 +74,14 @@ function getQueries() {
     const isSubroutinesChecked = Boolean(document.getElementById('cb_category_subroutines').checked);
     const isInterruptsChecked = Boolean(document.getElementById('cb_category_interrupts').checked);
 
+    //transfers checkboxes checks to string params
     var queries = [];
     const isAtLeatOneDiffUp = isEasyChecked || isMediumChecked || isHardChecked;
     const isAtLeatOneSubjUp = isMovArrayChecked || isAritLogicChecked || isLoopIfChecked || isStackChecked || isSubroutinesChecked || isInterruptsChecked;
 
     const areAllDiffsUp = isEasyChecked && isMediumChecked && isHardChecked;
     const areAllSubjsUp = isMovArrayChecked && isAritLogicChecked && isLoopIfChecked && isStackChecked && isSubroutinesChecked && isInterruptsChecked;
-
+    
     if (areAllDiffsUp && areAllSubjsUp) return queries;
     if (isAtLeatOneDiffUp && isAtLeatOneSubjUp) {
         if (isMovArrayChecked) { getQueriesHelper(queries, 'movarray') }
@@ -150,18 +153,23 @@ function queryButtonStopLoading() {
         $(".failed").removeClass("finish");
     }, 1000);
 }
+
+//inits the page and reading the data about the user from cloud.
 auth.onAuthStateChanged(user => {
+    //checks if the user logged in
     if (user) {
         window.localStorage.clear();
         window.localStorage.setItem('isLoggedIn', '1');
+        //updates the page with user's data
         txt_username.innerText = user.displayName;
         txt_changeUsername.value = user.displayName;
         txt_changeEmail.value = user.email;
 
         if (user.photoURL) { img_profile.src = user.photoURL }
         database.ref('global').once('value').then(globalData => {
-            NumberOfTasks = Number(globalData.val().numOfTasks);
+            NumberOfTasks = Number(globalData.val().numOfTasks); //the number of tasks in the service
             database.ref('users').child(user.uid).once('value').then(data => {
+                //loading the user's personal profile from cloud and displays it in the page.
                 if (data.exists()) {
                     if (data.child('image').exists()) { img_profile.src = String(data.val().image) }
                     if (data.child('name').exists()) { txt_username.innerText = String(data.val().name) }
@@ -210,7 +218,7 @@ auth.onAuthStateChanged(user => {
     }
     else { window.location = 'index.html' }
 });
- 
+//checks if the info about the task's author pulled from the cloud recently - if not it will read it.
 function initTasksFromServer(snapshot) {
     tasks_loading.style.display = 'flex';
     var authorsPromiseList = [];
@@ -231,8 +239,11 @@ function initTasksFromServer(snapshot) {
         tasks_loading.style.display = 'none';
     });
 }
+//transfers data from cloud to list of tasks to be shown in the page.
 function addTasksToList(snapshot) {
     snapshot.forEach(childSnapshot => {
+        
+        //setting the data from cloud into local vars
         const name = String(childSnapshot.child('name').val());
         const difficulty = Number(childSnapshot.child('difficulty').val());
         const taskID = childSnapshot.key;
@@ -241,6 +252,7 @@ function addTasksToList(snapshot) {
         const subject = String(childSnapshot.child('subject').val());
         const newTask = document.getElementById('taskslist').insertRow();
 
+        //if the task's row in the table was clicked - prepare to send its data to the editor throw local storage (and not reading it from cloud twice)
         newTask.onclick = function () {
             if (isAdmin) { localStorage.setItem('admin', 'true') }
             if (isTeacher) { localStorage.setItem('teacher', 'true') }
@@ -254,6 +266,7 @@ function addTasksToList(snapshot) {
             window.location = `editor.html?task=${cipher('fJx1ikJRS9lf4AIJdg1A')(taskID)}`;
         };
 
+        //creates the task's row in the table. 
         const authorCell = newTask.insertCell();
         const statusCell = newTask.insertCell();
         const subjectsCell = newTask.insertCell();
@@ -263,7 +276,7 @@ function addTasksToList(snapshot) {
         difficultyCell.className = 'task-list-difficulty-head';
         statusCell.className = 'task-list-status-head';
         subjectsCell.className = 'task-list-subject-head';
-
+        
         nameCell.innerHTML = getNameCode(name);
         statusCell.innerHTML = getStatusCode(status);
         difficultyCell.innerHTML = getDifficultyCode(difficulty);
@@ -271,6 +284,9 @@ function addTasksToList(snapshot) {
         authorCell.innerHTML = getAuthorHTMLCode(authorUID);
     });
 }
+
+//the functions below transfer task's crucial params to html tags in the table.
+
 function getNameCode(name) {
     return `<div class='task-list-name-div'>${name}</div>`
 }
@@ -369,12 +385,14 @@ document.getElementById('btn_settingsSave').addEventListener('click', e => {
     const txt_changePasswordNew = document.getElementById('txbNewPassword');
     const txt_changePasswordOld = document.getElementById('txbOldPassword');
 
+    //reading the crucial params from document.
     const username = String(txt_changeUsername.value).trim();
     const email = String(txt_changeEmail.value).trim();
     const passwordForNewEmail = String(txt_PasswordForNewEmail.value).trim();
     const passwordForNewPassword = String(txt_changePasswordOld.value).trim();
     const newPassword = String(txt_changePasswordNew.value).trim();
 
+    //validates the data
     if (username !== '' && username !== auth.currentUser.displayName) {
         auth.currentUser.updateProfile({ displayName: username }).then(() => { txt_username.innerText = username });
     }
