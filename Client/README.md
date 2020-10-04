@@ -23,6 +23,14 @@
   <h5>לדוגמה, נניח כי אנו מעוניינים לגשת לעמוד בשם abc: </h5>
   
   ```
+  Client/abc.html
+  ```
+  
+  ```
+  Client/abc/css/abc.css
+  ```
+  
+  ```
   Client/abc/js/abc.js
   ```
   # מבנה דפי המערכת
